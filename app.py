@@ -222,7 +222,7 @@ def _inject_style():
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
         /* Cap container width like Booking.com — content never stretches past ~1320px.
-           Selectors escalated to beat Streamlit's layout=wide full-width defaults. */
+           padding-top 5rem to clear Streamlit's fixed top toolbar (~3.5rem tall). */
         html body .stApp .main .block-container,
         html body [data-testid="stAppViewContainer"] .main .block-container,
         html body [data-testid="stMain"] .block-container,
@@ -233,17 +233,15 @@ def _inject_style():
             width: 100% !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            padding-top: 2rem !important;
+            padding-top: 5rem !important;
             padding-left: 2.5rem !important;
             padding-right: 2.5rem !important;
             box-sizing: border-box !important;
         }
-        /* Some Streamlit versions put content in a nested div with its own inline max-width */
-        html body .stApp .main > div,
-        html body [data-testid="stMain"] > div {
-            max-width: 1320px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
+        /* Streamlit's header — keep it transparent so brand text isn't covered */
+        header[data-testid="stHeader"] {
+            background: transparent !important;
+            height: auto !important;
         }
         h1 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 700; letter-spacing: -0.02em; }
         h2, h3 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 600; }
