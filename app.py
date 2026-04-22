@@ -221,7 +221,17 @@ def _inject_style():
         html, body, [class*="css"], .stMarkdown, .stTextInput input, .stTextArea textarea, .stButton button {
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
-        .main .block-container { padding-top: 2rem; max-width: 1180px; padding-left: 2rem; padding-right: 2rem; }
+        /* Cap container width like Booking.com — content never stretches past ~1320px */
+        .main .block-container,
+        section.main > div.block-container,
+        [data-testid="stAppViewContainer"] .main .block-container {
+            max-width: 1320px !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding-top: 2rem !important;
+            padding-left: 2.5rem !important;
+            padding-right: 2.5rem !important;
+        }
         h1 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 700; letter-spacing: -0.02em; }
         h2, h3 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 600; }
         .stTextInput input, .stTextArea textarea { font-size: 15px; color: #57595A; }
