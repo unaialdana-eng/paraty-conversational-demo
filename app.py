@@ -43,7 +43,7 @@ from prompts import (
 st.set_page_config(
     page_title="Paraty AI Booking — Demo",
     page_icon="🏨",
-    layout="centered",
+    layout="wide",
 )
 
 CLAUDE_MODEL = "claude-sonnet-4-6"
@@ -111,7 +111,7 @@ def generate_justifications(user_query: str, hotels: list) -> dict:
     try:
         msg = client.messages.create(
             model=CLAUDE_MODEL,
-            max_tokens=600,
+            max_tokens=900,
             system=JUSTIFIER_SYSTEM,
             messages=build_justifier_request(user_query, hotels),
         )
@@ -194,7 +194,7 @@ def _mock_intent(q: str) -> dict:
 
 
 def _mock_justification(h: dict) -> str:
-    """Template-based fallback — uses the hotel description if available."""
+    """Template-based fallback — used only when Claude is unavailable."""
     parts = []
     if h.get("property_type"):
         parts.append(h["property_type"].replace("_", " "))
@@ -202,13 +202,11 @@ def _mock_justification(h: dict) -> str:
     if h.get("amenities"):
         key_am = [a for a in h["amenities"] if a in (
             "pool", "rooftop_pool", "infinity_pool", "spa", "beach_access",
-            "family_room", "kids_club", "business_center", "caldera_view"
+            "family_room", "kids_club", "business_center", "caldera_view",
+            "harbor_view", "rooftop_terrace", "all_inclusive"
         )]
         if key_am:
             parts.append("with " + ", ".join(a.replace("_", " ") for a in key_am[:2]))
-    since = h.get("paraty_client_since")
-    if since and since <= 2022:
-        parts.append(f"— {2026 - since}-year Paraty direct-booking partner")
     return " ".join(parts).capitalize() + "."
 
 
@@ -223,7 +221,7 @@ def _inject_style():
         html, body, [class*="css"], .stMarkdown, .stTextInput input, .stTextArea textarea, .stButton button {
             font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif !important;
         }
-        .main .block-container { padding-top: 2rem; max-width: 900px; }
+        .main .block-container { padding-top: 2rem; max-width: 1180px; padding-left: 2rem; padding-right: 2rem; }
         h1 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 700; letter-spacing: -0.02em; }
         h2, h3 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 600; }
         .stTextInput input, .stTextArea textarea { font-size: 15px; color: #57595A; }
@@ -233,14 +231,14 @@ def _inject_style():
            ====================================================== */
         .hotel-card {
             display: grid;
-            grid-template-columns: 260px 1fr 210px;
+            grid-template-columns: 300px 1fr 230px;
             background: #FFFFFF;
             border: 1px solid #DFE3E8;
-            margin: 0.8rem 0;
+            margin: 0.9rem 0;
             border-radius: 8px;
             overflow: hidden;
             transition: border-color 0.15s, box-shadow 0.15s;
-            min-height: 240px;
+            min-height: 260px;
         }
         .hotel-card:hover {
             border-color: #0088CC;
@@ -338,15 +336,15 @@ def _inject_style():
         .hotel-justification {
             font-family: 'Montserrat', sans-serif;
             color: #1F2937;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin: 0.2rem 0 0.3rem;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin: 0.3rem 0 0.5rem;
             font-weight: 500;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
             font-style: italic;
+            background: #F7F9FB;
+            border-left: 3px solid #0088CC;
+            padding: 0.7rem 0.9rem;
+            border-radius: 0 4px 4px 0;
         }
         .hotel-features {
             display: flex;
