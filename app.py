@@ -227,149 +227,239 @@ def _inject_style():
         h1 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 700; letter-spacing: -0.02em; }
         h2, h3 { font-family: 'Montserrat', sans-serif; color: #0F3457; font-weight: 600; }
         .stTextInput input, .stTextArea textarea { font-size: 15px; color: #57595A; }
-        /* ============ Hotel card — OTA-style horizontal layout ============ */
+        /* ======================================================
+           Hotel card — OTA-standard 3-zone layout
+           [ IMAGE 260 ][ IDENTITY + FEATURES (flex) ][ PRICE 210 ]
+           ====================================================== */
         .hotel-card {
-            display: flex;
+            display: grid;
+            grid-template-columns: 260px 1fr 210px;
             background: #FFFFFF;
-            border: 1px solid #E5E9EF;
-            margin: 0.9rem 0;
-            border-radius: 6px;
+            border: 1px solid #DFE3E8;
+            margin: 0.8rem 0;
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(15, 52, 87, 0.06);
-            transition: box-shadow 0.2s, border-color 0.2s;
-            min-height: 220px;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            min-height: 240px;
         }
         .hotel-card:hover {
-            box-shadow: 0 4px 14px rgba(15, 52, 87, 0.12);
-            border-color: #CDD7E0;
+            border-color: #0088CC;
+            box-shadow: 0 4px 16px rgba(15, 52, 87, 0.08);
         }
         .hotel-card-image-wrap {
-            flex: 0 0 280px;
             position: relative;
             background: linear-gradient(135deg, #0088CC 0%, #0F3457 100%);
+            overflow: hidden;
         }
         .hotel-card-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.4s ease;
         }
-        .savings-badge-overlay {
+        .hotel-card:hover .hotel-card-image { transform: scale(1.03); }
+        .discount-chip {
             position: absolute;
             top: 12px;
             left: 12px;
-            background: #00A896;
+            background: rgba(15, 52, 87, 0.92);
             color: #FFFFFF;
-            padding: 0.3rem 0.65rem;
+            padding: 0.32rem 0.6rem;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.04em;
             border-radius: 3px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(4px);
+        }
+        .partner-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #0088CC;
+            padding: 0.25rem 0.55rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
+            border-radius: 3px;
         }
-        .hotel-card-body {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr 200px;
-            gap: 1.2rem;
-            padding: 1.1rem 1.3rem;
+        /* ==== Identity + features (middle column) ==== */
+        .hotel-identity {
+            display: flex;
+            flex-direction: column;
+            padding: 1.2rem 1.4rem 1.2rem 1.4rem;
+            min-width: 0;
+            gap: 0.55rem;
         }
-        .hotel-main { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+        .hotel-header { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
         .hotel-name {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #0F3457;
             margin: 0;
-            line-height: 1.25;
+            line-height: 1.3;
             letter-spacing: -0.01em;
         }
+        .hotel-type-chip {
+            display: inline-block;
+            background: #F0F7FC;
+            color: #006699;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border-radius: 3px;
+            white-space: nowrap;
+        }
         .hotel-location {
-            color: #6B7280;
-            font-size: 0.82rem;
+            color: #57595A;
+            font-size: 0.83rem;
             font-weight: 500;
             margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
         }
-        .hotel-location .location-dot { color: #0088CC; margin-right: 0.35rem; }
+        .hotel-location .loc-icon { color: #0088CC; font-size: 0.78rem; }
+        .hotel-location .loc-sep { color: #CDD5DF; margin: 0 0.1rem; }
+        .hotel-location a.map-link {
+            color: #0088CC;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+        .hotel-location a.map-link:hover { text-decoration: underline; }
         .hotel-justification {
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            color: #374151;
-            font-size: 0.88rem;
+            color: #1F2937;
+            font-size: 0.9rem;
             line-height: 1.5;
-            margin: 0.3rem 0 0.2rem;
+            margin: 0.2rem 0 0.3rem;
+            font-weight: 500;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-style: italic;
         }
-        .amenity-chips { margin-top: auto; padding-top: 0.4rem; }
-        .chip {
-            display: inline-block;
-            background: #F1F5F9;
-            color: #475569;
-            padding: 0.22rem 0.6rem;
-            font-size: 0.7rem;
-            border-radius: 3px;
-            margin: 0.15rem 0.25rem 0.15rem 0;
-            font-family: 'Montserrat', sans-serif;
+        .hotel-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 1rem;
+            margin-top: auto;
+            padding-top: 0.3rem;
+        }
+        .feature {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #374151;
+            font-size: 0.8rem;
             font-weight: 500;
+            white-space: nowrap;
         }
-        /* Right column — price + CTA (OTA standard) */
+        .feature .check {
+            color: #00A896;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        /* ==== Price column (right) ==== */
         .hotel-price-col {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
             justify-content: space-between;
-            border-left: 1px solid #F0F2F5;
-            padding-left: 1.1rem;
-            min-width: 0;
+            padding: 1.2rem 1.2rem 1.2rem 1.1rem;
+            border-left: 1px solid #EEF0F3;
+            gap: 0.5rem;
         }
-        .rating-pill {
+        .review-block {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+        .review-pill {
             display: inline-flex;
             align-items: center;
-            background: #0F3457;
+            justify-content: center;
+            background: #0088CC;
             color: #FFFFFF;
-            padding: 0.25rem 0.55rem;
-            border-radius: 3px;
-            font-size: 0.8rem;
+            padding: 0.35rem 0.55rem;
+            border-radius: 4px 4px 4px 0;
+            font-size: 0.9rem;
             font-weight: 700;
-            white-space: nowrap;
+            line-height: 1;
+            min-width: 2.3rem;
         }
-        .rating-pill .star { color: #FFB400; margin-right: 0.25rem; font-size: 0.85rem; }
+        .review-pill.excellent { background: #0F3457; }
+        .review-pill.very-good { background: #0088CC; }
+        .review-pill.good { background: #4A90B8; }
+        .review-label {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.78rem;
+            line-height: 1.25;
+        }
+        .review-label .label-text {
+            color: #0F3457;
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+        .review-label .count-text {
+            color: #6B7280;
+            font-size: 0.72rem;
+            font-weight: 500;
+        }
         .price-block {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 0.15rem;
-            width: 100%;
+            text-align: right;
+            margin-top: 0.3rem;
         }
-        .price-booking {
-            color: #9CA3AF;
-            text-decoration: line-through;
-            font-size: 0.78rem;
-            font-weight: 500;
-        }
-        .price-direct {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.55rem;
-            font-weight: 700;
-            color: #0F3457;
-            line-height: 1;
-        }
-        .price-unit {
+        .price-context {
             color: #6B7280;
             font-size: 0.72rem;
             font-weight: 500;
-            margin-top: 0.1rem;
+            margin-bottom: 0.2rem;
+            letter-spacing: 0.01em;
         }
-        .price-total {
-            color: #374151;
-            font-size: 0.78rem;
-            font-weight: 600;
-            margin-top: 0.35rem;
+        .price-was {
+            color: #9CA3AF;
+            text-decoration: line-through;
+            font-size: 0.82rem;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+        .price-now {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: #0F3457;
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+        }
+        .price-per-night {
+            color: #57595A;
+            font-size: 0.73rem;
+            font-weight: 500;
+            margin-top: 0.15rem;
+        }
+        .savings-tag {
+            display: inline-block;
+            background: #E6FBF7;
+            color: #007A6B;
+            padding: 0.22rem 0.55rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 3px;
+            margin-top: 0.4rem;
+            letter-spacing: 0.01em;
         }
         .cta, a.cta, a.cta:link, a.cta:visited, a.cta:hover, a.cta:active {
             display: block;
@@ -377,26 +467,29 @@ def _inject_style():
             text-align: center;
             background: #0088CC;
             color: #FFFFFF !important;
-            padding: 0.6rem 0.9rem;
+            padding: 0.65rem 0.9rem;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             border-radius: 4px;
             text-decoration: none !important;
             transition: background 0.15s;
             border: none;
-            margin-top: 0.6rem;
-            box-shadow: 0 1px 3px rgba(0, 136, 204, 0.2);
+            margin-top: 0.7rem;
         }
-        a.cta:hover { background: #0099E6; box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3); }
-        /* Responsive — stack on mobile */
+        a.cta:hover { background: #0099E6; }
+        /* ==== Responsive breakpoints ==== */
+        @media (max-width: 860px) {
+            .hotel-card { grid-template-columns: 220px 1fr 190px; min-height: 220px; }
+            .hotel-identity { padding: 1rem 1.1rem; }
+        }
         @media (max-width: 720px) {
-            .hotel-card { flex-direction: column; }
-            .hotel-card-image-wrap { flex: 0 0 160px; }
-            .hotel-card-body { grid-template-columns: 1fr; gap: 0.8rem; }
-            .hotel-price-col { border-left: none; border-top: 1px solid #F0F2F5; padding-left: 0; padding-top: 0.8rem; align-items: stretch; }
-            .rating-pill { align-self: flex-start; }
+            .hotel-card { grid-template-columns: 1fr; grid-template-rows: 180px auto auto; min-height: 0; }
+            .hotel-price-col { border-left: none; border-top: 1px solid #EEF0F3; align-items: stretch; flex-direction: row; justify-content: space-between; align-items: center; }
+            .review-block { flex-shrink: 0; }
+            .price-block { align-items: flex-end; }
+            .cta { width: auto; margin-top: 0; padding: 0.55rem 1.4rem; }
         }
         .disclaimer {
             font-size: 0.72rem;
@@ -566,47 +659,114 @@ def _render_about():
 
 def _render_hotel_card(h: dict, justification: str, nights: int):
     savings = compute_savings(h, nights)
-    amenities_html = "".join(
-        f'<span class="chip">{a.replace("_", " ").title()}</span>'
-        for a in h.get("amenities", [])[:5]
+
+    # Features — the top 3 most "booking-relevant" amenities, formatted as checkmark bullets.
+    _feature_labels = {
+        "pool": "Pool", "rooftop_pool": "Rooftop pool", "infinity_pool": "Infinity pool",
+        "beach_access": "Beach access", "spa": "Spa", "gym": "Gym",
+        "free_wifi": "Free WiFi", "breakfast_included": "Breakfast included",
+        "family_room": "Family rooms", "kids_club": "Kids club",
+        "restaurant": "Restaurant", "bar": "Bar",
+        "business_center": "Business center", "rooftop_bar": "Rooftop bar",
+        "rooftop_terrace": "Rooftop terrace", "all_inclusive": "All-inclusive",
+        "air_conditioning": "Air conditioning", "caldera_view": "Caldera view",
+        "harbor_view": "Harbour view", "mountain_view": "Mountain view",
+        "ocean_view": "Ocean view", "river_view": "River view",
+        "garden": "Garden", "courtyard": "Courtyard", "onsen": "Private onsen",
+        "coworking": "Coworking", "shuttle": "Airport shuttle",
+    }
+    _priority = [
+        "pool", "infinity_pool", "rooftop_pool", "beach_access", "spa",
+        "breakfast_included", "family_room", "kids_club", "gym",
+        "rooftop_terrace", "rooftop_bar", "caldera_view", "harbor_view",
+        "ocean_view", "mountain_view", "onsen", "all_inclusive",
+        "business_center", "restaurant", "free_wifi",
+    ]
+    hotel_amenities = h.get("amenities", [])
+    ordered = [a for a in _priority if a in hotel_amenities]
+    ordered += [a for a in hotel_amenities if a not in ordered]
+    top_features = ordered[:4]
+    features_html = "".join(
+        f'<span class="feature"><span class="check">✓</span>{_feature_labels.get(a, a.replace("_", " ").title())}</span>'
+        for a in top_features
     )
-    rating = h.get("avg_rating")
-    rating_html = (
-        f'<div class="rating-pill"><span class="star">★</span>{rating}</div>'
-        if rating else '<div></div>'
+
+    rating = h.get("avg_rating") or 0
+    # Review-score classification
+    if rating >= 4.7:
+        rclass, rlabel = "excellent", "Exceptional"
+    elif rating >= 4.4:
+        rclass, rlabel = "excellent", "Excellent"
+    elif rating >= 4.1:
+        rclass, rlabel = "very-good", "Very good"
+    else:
+        rclass, rlabel = "good", "Good"
+    review_count = int(h.get("rooms", 30) * 8.5)  # synthetic review count — stable per hotel
+    review_html = (
+        f'''<div class="review-block">
+              <div class="review-label">
+                <span class="label-text">{rlabel}</span>
+                <span class="count-text">{review_count:,} reviews</span>
+              </div>
+              <div class="review-pill {rclass}">{rating:.1f}</div>
+            </div>'''
+        if rating else ""
     )
+
     night_label = f"{nights} night{'s' if nights > 1 else ''}"
+    guests_label = "2 guests"  # default — could be pulled from intent
+
     image_html = (
         f'<img class="hotel-card-image" src="{h["image_url"]}" alt="{h["name"]}" loading="lazy">'
         if h.get("image_url") else ""
     )
-    savings_overlay = (
-        f'<div class="savings-badge-overlay">Save {savings["saving_pct"]}% vs OTA</div>'
-        if savings["saving_total"] > 0 else ""
+    discount_chip = (
+        f'<div class="discount-chip">−{savings["saving_pct"]}%</div>'
+        if savings["saving_pct"] >= 10 else ""
     )
+    paraty_since = h.get("paraty_client_since")
+    partner_badge = (
+        f'<div class="partner-badge">Paraty Direct</div>'
+        if paraty_since and paraty_since <= 2023 else ""
+    )
+
+    property_type = h.get("property_type", "").replace("_", " ").title()
+    type_chip = (
+        f'<span class="hotel-type-chip">{property_type}</span>'
+        if property_type else ""
+    )
+
     st.markdown(
         f"""
         <div class="hotel-card">
           <div class="hotel-card-image-wrap">
             {image_html}
-            {savings_overlay}
+            {discount_chip}
+            {partner_badge}
           </div>
-          <div class="hotel-card-body">
-            <div class="hotel-main">
+          <div class="hotel-identity">
+            <div class="hotel-header">
               <p class="hotel-name">{h['name']}</p>
-              <p class="hotel-location"><span class="location-dot">◆</span>{h['city']}, {h['country']} · {h.get('rooms', '—')} rooms</p>
-              <p class="hotel-justification">{justification}</p>
-              <div class="amenity-chips">{amenities_html}</div>
+              {type_chip}
             </div>
-            <div class="hotel-price-col">
-              {rating_html}
-              <div class="price-block">
-                <span class="price-booking">€{savings['booking_total']:.0f}</span>
-                <span class="price-direct">€{savings['direct_total']:.0f}</span>
-                <span class="price-unit">direct · {night_label}</span>
-                <span class="price-total">You save €{savings['saving_total']:.0f}</span>
-                <a class="cta" href="#">Book direct</a>
-              </div>
+            <p class="hotel-location">
+              <span class="loc-icon">●</span>
+              {h['city']}, {h['country']}
+              <span class="loc-sep">·</span>
+              {h.get('rooms', '—')} rooms
+            </p>
+            <p class="hotel-justification">{justification}</p>
+            <div class="hotel-features">{features_html}</div>
+          </div>
+          <div class="hotel-price-col">
+            {review_html}
+            <div class="price-block">
+              <span class="price-context">{night_label} · {guests_label}</span>
+              <span class="price-was">€{savings['booking_total']:.0f}</span>
+              <span class="price-now">€{savings['direct_total']:.0f}</span>
+              <span class="price-per-night">€{h['direct_price_per_night']:.0f} / night</span>
+              <span class="savings-tag">Save €{savings['saving_total']:.0f} direct</span>
+              <a class="cta" href="#">Book direct</a>
             </div>
           </div>
         </div>
