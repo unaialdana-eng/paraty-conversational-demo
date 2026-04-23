@@ -9,6 +9,7 @@ Open:  http://localhost:8000
 
 from __future__ import annotations
 
+import concurrent.futures
 import hashlib
 import json
 import os
@@ -74,7 +75,9 @@ def _get_client():
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         return None
-    return Anthropic(api_key=api_key)
+    # 20s timeout so a hung API call surfaces as an exception (→ fallback) instead
+    # of freezing the request thread until uvicorn's default timeout kicks in.
+    return Anthropic(api_key=api_key, timeout=20.0)
 
 
 def _extract_json(text: str) -> dict:
@@ -527,8 +530,16 @@ def results(request: Request, q: str = ""):
     intent = parse_intent(query)
     all_hotels = load_hotels()
     shortlisted = filter_and_rank(intent, all_hotels, top_n=3)
-    justifications = generate_justifications(query, shortlisted)
-    conversation = build_concierge_conversation(query, intent, shortlisted)
+
+    # Run the two independent Claude calls in parallel — the justifier (per-card
+    # ai-quote) and the concierge opening (sidebar bubble) don't depend on each
+    # other. Cuts /results wall-clock time from ~4-6s to ~2-3s on cache miss.
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        fut_just = pool.submit(generate_justifications, query, shortlisted)
+        fut_conv = pool.submit(build_concierge_conversation, query, intent, shortlisted)
+        justifications = fut_just.result()
+        conversation = fut_conv.result()
+
     nights = intent.get("nights") or 3
 
     enriched = []
