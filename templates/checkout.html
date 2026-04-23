@@ -104,13 +104,14 @@
     transition:background .15s ease;cursor:pointer;
   }
   .addon:hover{background:var(--bg);}
-  .radio{
-    width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
-    flex-shrink:0;position:relative;transition:border-color .15s ease;
+  .checkbox{
+    width:22px;height:22px;border-radius:4px;border:2px solid var(--border);
+    flex-shrink:0;position:relative;transition:all .15s ease;
   }
-  .radio.on{border-color:var(--brand-cyan);}
-  .radio.on::after{
-    content:"";position:absolute;inset:3px;border-radius:50%;background:var(--brand-cyan);
+  .checkbox.on{border-color:var(--brand-cyan);background:var(--brand-cyan);}
+  .checkbox.on::after{
+    content:"";position:absolute;top:2px;left:6px;width:6px;height:11px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
   }
   .addon-title{font:600 14px/20px 'Montserrat';color:var(--brand-navy);}
   .addon-why{font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;}
@@ -224,8 +225,8 @@
       <div class="sec-label">Suggested for your stay</div>
       <div class="addons">
         {% for a in addons %}
-        <label class="addon" onclick="toggleRadio(this)">
-          <div class="radio{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
+        <label class="addon" onclick="toggleCheckbox(this)">
+          <div class="checkbox{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
           <div>
             <div class="addon-title">{{ a.title }}</div>
             <div class="addon-why">{{ a.reason }}</div>
@@ -272,8 +273,8 @@
 
 </div>
 <script>
-  function toggleRadio(el){
-    const me = el.querySelector('.radio');
+  function toggleCheckbox(el){
+    const me = el.querySelector('.checkbox');
     me.classList.toggle('on');
   }
   function completeBooking(e){
