@@ -252,22 +252,38 @@
   .addon-price{font:700 15px/22px 'Montserrat';color:var(--brand-navy);white-space:nowrap;}
   .addon-price.free{color:var(--brand-teal-deep);}
 
-  /* Final CTA */
-  .final{padding:64px 40px 96px;display:flex;flex-direction:column;gap:20px;align-items:center;}
-  .final-row{
-    width:1040px;max-width:100%;display:flex;align-items:center;justify-content:space-between;
-    background:var(--brand-cyan);border-radius:var(--r-md);padding:8px 8px 8px 32px;
-    box-shadow:0 8px 32px rgba(0,136,204,0.25);
+  /* Final CTA — mirrors the checkout total block for consistency */
+  .final{
+    padding:72px 40px 96px;
+    display:flex;flex-direction:column;align-items:center;gap:20px;
   }
-  .final-price{display:flex;flex-direction:column;color:#fff;gap:2px;}
-  .final-price .lbl{font:600 11px/14px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;opacity:.85;}
-  .final-price .amt{font:700 28px/32px 'Montserrat';letter-spacing:-0.01em;}
+  .final-total{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding-top:24px;border-top:1px solid var(--border-soft);width:100%;max-width:520px;
+  }
+  .final-strike{font:500 14px/20px 'Montserrat';color:var(--faint);text-decoration:line-through;}
+  .final-amt{font:700 48px/56px 'Montserrat';letter-spacing:-0.025em;color:var(--brand-navy);margin-top:2px;}
+  .final-save{
+    font:700 13px/18px 'Montserrat';color:var(--brand-teal-deep);
+    background:var(--brand-teal-soft);padding:6px 14px;border-radius:var(--r-xs);margin-top:8px;
+  }
+  .final-caption{font:500 13px/20px 'Montserrat';color:var(--muted);margin-top:12px;}
   .final-cta{
-    padding:18px 32px;background:#fff;color:var(--brand-cyan);border:0;border-radius:var(--r-sm);
-    font:700 16px/22px 'Montserrat';cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;
+    margin-top:8px;
+    padding:0 32px;height:60px;min-width:340px;
+    background:var(--brand-cyan);color:#fff;border:0;border-radius:var(--r-sm);
+    font:700 16px/22px 'Montserrat';letter-spacing:-0.01em;
+    cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 8px 32px rgba(0,136,204,0.28);
+    transition:background .15s ease, box-shadow .15s ease;
   }
-  .final-cta:hover{background:var(--brand-cyan-soft);}
-  .final-note{font:500 13px/18px 'Montserrat';color:var(--muted);}
+  .final-cta:hover{background:var(--brand-cyan-hover);box-shadow:0 12px 40px rgba(0,136,204,0.36);}
+  .final-note{
+    font:500 13px/18px 'Montserrat';color:var(--muted);margin-top:4px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  .final-note .sep{color:var(--faint);}
 
   /* Footer */
   .footer{
@@ -517,18 +533,26 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
+  <!-- FINAL CTA — same breakdown pattern as checkout -->
   <section class="final">
-    <div class="final-row">
-      <div class="final-price">
-        <div class="lbl">Total · {{ nights }} night{% if nights != 1 %}s{% endif %} · {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} + {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}</div>
-        <div class="amt">€{{ savings.direct_total|round|int }}</div>
-      </div>
-      <a href="/checkout/{{ hotel.id }}?q={{ q|urlencode }}" class="final-cta">Complete reservation
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
+    <div class="final-total">
+      <div class="final-strike">€{{ savings.booking_total|round|int }} on other sites</div>
+      <div class="final-amt">€{{ savings.direct_total|round|int }}</div>
+      <div class="final-save">You save €{{ savings.saving_total|round|int }} direct</div>
+      <div class="final-caption">Total · {{ nights }} night{% if nights != 1 %}s{% endif %} · {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} + {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}</div>
     </div>
-    <div class="final-note">Secure · cancel free · price held for <span id="final-held">23 min</span></div>
+    <a href="/checkout/{{ hotel.id }}?q={{ q|urlencode }}" class="final-cta">
+      Complete reservation
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <div class="final-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--brand-teal);"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure
+      <span class="sep">·</span>
+      cancel free
+      <span class="sep">·</span>
+      price held for <span id="final-held">23 min</span>
+    </div>
   </section>
 
     </div> <!-- /main-col -->
