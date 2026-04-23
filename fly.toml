@@ -1,0 +1,29 @@
+# fly.toml — Paraty AI Booking demo
+# Docs: https://fly.io/docs/reference/configuration/
+#
+# App name is a placeholder; `fly launch` will ask you to pick one the first
+# time and rewrite this line. If you want a specific URL, set it here before
+# running `fly launch` and answer "no" when it offers to rename.
+
+app = "paraty-demo"
+primary_region = "mad"  # Madrid — closest region to Mallorca for low latency
+
+[build]
+
+[env]
+  PORT = "8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Keep the machine running so the founder's first click is instant, not a
+  # 5-10s cold boot.
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 512

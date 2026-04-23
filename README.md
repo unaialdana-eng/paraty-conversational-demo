@@ -19,6 +19,11 @@ User types a natural-language travel query ("family hotel in Málaga for 3 night
 
 ## Run locally (5 min setup)
 
+Two runtimes ship in this repo:
+
+- **FastAPI + Jinja** (recommended) — 4 pixel-fidelity pages matching the Claude Design HTML exports, plus an explainer landing. This is the version to demo.
+- **Streamlit** (legacy) — the original one-command demo. Kept around as a fallback but visually less faithful.
+
 ```bash
 cd prototype
 
@@ -32,11 +37,25 @@ cp .env.example .env
 # Edit .env with your key from https://console.anthropic.com/
 export ANTHROPIC_API_KEY="sk-ant-..."
 
-# 3) Launch
-streamlit run app.py
+# 3a) Launch FastAPI (recommended for the pitch)
+uvicorn server:app --reload --port 8000
+# open http://localhost:8000
+
+# 3b) OR launch the legacy Streamlit single-page demo
+streamlit run streamlit_app.py
+# open http://localhost:8501
 ```
 
-Open http://localhost:8501 in your browser.
+### FastAPI routes
+
+| Route                     | Purpose |
+|---------------------------|---------|
+| `GET /`                   | Explainer landing — purpose, restrictions, tech, what's mock |
+| `GET /app`                | Homepage — unified search shell (classic + AI concierge) |
+| `POST /search`            | Parses the query and redirects to `/results?q=…` |
+| `GET /results?q=…`        | AI concierge sidebar + editable search + filter chips + hotel cards |
+| `GET /property/{id}?q=…`  | Hero + gallery + owner voice + neighbourhood + AI add-ons |
+| `GET /checkout/{id}?q=…`  | Express checkout — guest info, payment, addons, savings |
 
 ---
 
@@ -55,16 +74,74 @@ Open http://localhost:8501 in your browser.
 
 ```
 prototype/
-├── README.md              # this file
-├── requirements.txt       # streamlit, anthropic, python-dotenv
-├── app.py                 # Streamlit main — UI + orchestration
-├── prompts.py             # Claude prompts (intent parsing + justifier)
-├── booking_engine.py      # mock Paraty BE — filter + rank + savings
-├── hotels.json            # 20 hand-curated mock hotels (across Paraty geo footprint)
-├── .env.example           # ANTHROPIC_API_KEY placeholder
-└── .streamlit/
-    └── config.toml        # editorial theme (ivory + terracotta + charcoal)
+├── README.md                 # this file
+├── requirements.txt          # fastapi, uvicorn, jinja2, streamlit, anthropic, dotenv
+├── server.py                 # FastAPI app — routes + LLM orchestration + caching
+├── streamlit_app.py          # legacy single-page Streamlit demo
+├── prompts.py                # Claude prompts (intent, justifier, concierge opening, property page)
+├── booking_engine.py         # mock Paraty BE — filter + rank + savings + fallback generators
+├── hotels.json               # 60 hand-curated mock hotels (across Paraty's real geo footprint)
+├── templates/
+│   ├── explainer.html        # Landing / about-the-demo
+│   ├── homepage.html         # Unified search shell (classic + AI concierge strip)
+│   ├── results.html          # Concierge sidebar + search + filter + cards
+│   ├── property.html         # Hero + concierge Q&A + gallery + owner voice + addons
+│   └── checkout.html         # Express checkout with AI-reasoned addons
+├── Dockerfile                # Container image for Fly.io deploy
+├── .dockerignore             # Keeps the image small (excludes designs/, .venv, etc.)
+├── fly.toml                  # Fly.io app config (Madrid region, always-on)
+└── designs/                  # Untouched Claude Design HTML exports (reference)
+    ├── Paraty Homepage.html
+    ├── Paraty Results.html
+    ├── Paraty Property.html
+    ├── Paraty Checkout.html
+    ├── DESIGN_BUNDLE_README.md
+    └── chats/                # Chat transcripts from the design iteration
 ```
+
+---
+
+## Deploy to Fly.io (public URL for the pitch)
+
+```bash
+# 1) One-time install + login (skip if already done)
+brew install flyctl
+fly auth login
+
+# 2) From prototype/ — first-time launch
+#    Fly will read fly.toml + Dockerfile. Answer:
+#      - "Would you like to copy its configuration?" → Yes
+#      - App name → paraty-demo  (or whatever is free — remember it)
+#      - Region → mad (Madrid) is pre-set, accept
+#      - Postgres / Redis → No
+#      - Deploy now? → No  (we still need to set the secret)
+fly launch --no-deploy
+
+# 3) Set the Anthropic API key as a secret
+fly secrets set ANTHROPIC_API_KEY="sk-ant-..."
+
+# 4) Deploy — builds the Docker image, pushes, and spins up the VM
+fly deploy
+
+# 5) Open the public URL
+fly open
+```
+
+The URL will look like `https://paraty-demo.fly.dev`. Share it in the founder email.
+
+### Day-to-day
+
+| Need | Command |
+|------|---------|
+| See live logs | `fly logs` |
+| Redeploy after code change | `fly deploy` |
+| Update the Claude key | `fly secrets set ANTHROPIC_API_KEY="sk-ant-..."` |
+| Check machine is running | `fly status` |
+| Scale memory if it OOMs | `fly scale memory 1024` |
+
+### Cost
+
+Fly's free allowance covers 3 shared-cpu-1x VMs at 256MB. This demo runs on one 512MB VM (Python + Anthropic SDK is a little chubby for 256MB), which costs roughly **€1.70–€3/month** depending on traffic. Acceptable for a demo you can take down after the pitch (`fly apps destroy paraty-demo`).
 
 ---
 

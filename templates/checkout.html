@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Paraty — Reserve Hotel Kent</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-cyan:#0088CC;
+    --brand-cyan-hover:#0099E6;
+    --brand-cyan-soft:#F0F7FC;
+    --brand-navy:#0F3457;
+    --brand-teal:#00A896;
+    --brand-teal-soft:#E6FBF7;
+    --brand-teal-deep:#007A6B;
+    --white:#FFFFFF;
+    --bg:#F7F9FB;
+    --border:#DFE3E8;
+    --border-soft:#EEF0F3;
+    --text:#1F2937;
+    --muted:#6B7280;
+    --faint:#9CA3AF;
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-pill:999px;
+    --sh-card:0 1px 3px rgba(15,52,87,0.06);
+    --sh-glow:0 8px 32px rgba(0,136,204,0.28);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;}
+  body{font-family:'Montserrat',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;}
+  .page{width:1440px;min-height:900px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;}
+
+  /* Header */
+  .header{
+    height:72px;padding:24px 40px;background:var(--white);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wordmark{font:700 20px/1 'Montserrat';color:var(--brand-cyan);letter-spacing:-0.01em;text-decoration:none;}
+  .wordmark sup{font:500 10px/1 'JetBrains Mono';color:var(--brand-teal);margin-left:4px;letter-spacing:0.04em;vertical-align:top;}
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .nav-link{font:500 14px/20px 'Montserrat';color:var(--brand-navy);text-decoration:none;cursor:pointer;}
+  .nav-link:hover{color:var(--brand-cyan)}
+  .icon-btn{width:24px;height:24px;color:var(--brand-navy);display:inline-flex;align-items:center;justify-content:center;}
+
+  .wrap{
+    max-width:760px;width:100%;margin:56px auto 40px;
+    display:flex;flex-direction:column;gap:28px;padding:0 20px;
+  }
+
+  /* Stay summary */
+  .stay{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:12px 16px;height:80px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .stay img{width:60px;height:60px;border-radius:var(--r-sm);object-fit:cover;flex-shrink:0;}
+  .stay-body{flex:1;min-width:0;}
+  .stay-title{font:700 15px/22px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.005em;}
+  .stay-meta{font:500 13px/18px 'Montserrat';color:var(--muted);margin-top:2px;}
+  .stay .change{font:600 13px/20px 'Montserrat';color:var(--brand-cyan);text-decoration:none;}
+  .stay .change:hover{color:var(--brand-cyan-hover);}
+
+  /* Section label */
+  .sec-label{
+    font:700 11px/14px 'Montserrat';letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--brand-cyan);margin-bottom:12px;
+  }
+  .sec-label.muted{color:var(--muted);}
+
+  /* Guest info */
+  .guest{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field input{
+    padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-sm);
+    font:500 15px/22px 'Montserrat';color:var(--brand-navy);background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;outline:0;
+  }
+  .field input:focus{border-color:var(--brand-cyan);box-shadow:0 0 0 3px rgba(0,136,204,0.12);}
+  .field-hint{font:500 italic 11px/16px 'Montserrat';color:var(--muted);padding-left:4px;}
+
+  /* Payment */
+  .pay{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:16px 20px;
+  }
+  .pay-left{display:flex;align-items:center;gap:14px;}
+  .pay-logo{
+    width:48px;height:32px;border-radius:var(--r-xs);background:#000;color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 13px/1 'Montserrat';letter-spacing:-0.01em;
+  }
+  .pay-text{font:600 15px/22px 'Montserrat';color:var(--brand-navy);}
+  .pay-sub{font:500 13px/18px 'Montserrat';color:var(--muted);margin-top:2px;}
+  .pay .change{font:600 13px/20px 'Montserrat';color:var(--brand-cyan);text-decoration:none;}
+
+  /* Addons */
+  .addons{display:flex;flex-direction:column;gap:8px;}
+  .addon{
+    display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;
+    padding:14px 16px;border-radius:var(--r-sm);
+    transition:background .15s ease;cursor:pointer;
+  }
+  .addon:hover{background:var(--bg);}
+  .radio{
+    width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
+    flex-shrink:0;position:relative;transition:border-color .15s ease;
+  }
+  .radio.on{border-color:var(--brand-cyan);}
+  .radio.on::after{
+    content:"";position:absolute;inset:3px;border-radius:50%;background:var(--brand-cyan);
+  }
+  .addon-title{font:600 14px/20px 'Montserrat';color:var(--brand-navy);}
+  .addon-why{font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;}
+  .addon-why::before{content:"AI";font:700 8px/1 'JetBrains Mono';letter-spacing:0.08em;color:var(--brand-cyan);background:#fff;border:1px solid var(--brand-cyan);padding:2px 4px;border-radius:3px;}
+  .addon-price{font:700 14px/20px 'Montserrat';color:var(--brand-navy);white-space:nowrap;}
+  .addon-price.free{color:var(--brand-teal-deep);}
+
+  /* Total */
+  .total{
+    display:flex;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border-soft);
+    margin-top:8px;
+  }
+  .total-block{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+  .total-amt{font:700 36px/40px 'Montserrat';letter-spacing:-0.02em;color:var(--brand-navy);}
+  .total-strike{font:500 13px/18px 'Montserrat';color:var(--faint);text-decoration:line-through;}
+  .total-save{font:700 13px/18px 'Montserrat';color:var(--brand-teal-deep);}
+
+  /* CTA */
+  .primary{
+    width:100%;padding:0 24px;height:60px;
+    background:var(--brand-cyan);color:#fff;border:0;border-radius:var(--r-sm);
+    font:700 18px/22px 'Montserrat';letter-spacing:-0.01em;
+    cursor:pointer;transition:background .15s ease, box-shadow .15s ease;
+    box-shadow:var(--sh-glow);
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    text-decoration:none;
+  }
+  .primary:hover{background:var(--brand-cyan-hover);box-shadow:0 12px 40px rgba(0,136,204,0.36);}
+  .secure{
+    text-align:center;font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:4px;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  .secure .sep{color:var(--faint);}
+  .secure svg{color:var(--brand-teal);}
+
+  /* Footer */
+  .footer{
+    margin-top:auto;
+    height:80px;padding:24px 40px;background:var(--brand-navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .footer .copy{font:500 14px/20px 'Montserrat';color:rgba(255,255,255,0.7);}
+  .footer .wordmark-f{font:700 14px/20px 'Montserrat';color:#fff;}
+  .footer .legal{display:flex;gap:20px;}
+  .footer .legal a{color:rgba(255,255,255,0.7);text-decoration:none;font:500 14px/20px 'Montserrat';}
+  .footer .legal .sep{color:rgba(255,255,255,0.3);}
+
+  .row{display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="Paraty Checkout">
+
+  <header class="header">
+    <a href="/app" class="wordmark">paraty<sup>ai</sup></a>
+    <nav class="nav-right">
+      <a class="nav-link" href="/">About</a>
+      <a class="nav-link" href="#">Help</a>
+      <a class="nav-link" href="#">Log in</a>
+      <span class="icon-btn" aria-label="Saved"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span>
+    </nav>
+  </header>
+
+  <main class="wrap">
+
+    <!-- STAY SUMMARY -->
+    <div class="stay">
+      <img src="{{ hotel.image_url }}" alt="{{ hotel.name }}"/>
+      <div class="stay-body">
+        <div class="stay-title">{{ hotel.name }} · {{ hotel.city }}</div>
+        <div class="stay-meta">
+          {% if intent.check_in and intent.check_out %}{{ intent.check_in }}–{{ intent.check_out }}{% else %}{{ nights }} night{% if nights != 1 %}s{% endif %}{% endif %}
+          · {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} + {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}
+        </div>
+      </div>
+      <a href="/property/{{ hotel.id }}?q={{ q|urlencode }}" class="change">Change</a>
+    </div>
+
+    <!-- GUEST INFO -->
+    <div>
+      <div class="sec-label muted">Guest information</div>
+      <div class="guest">
+        <div class="field">
+          <input type="text" value="Unai Aldana" />
+          <div class="field-hint">(from your profile)</div>
+        </div>
+        <div class="field">
+          <input type="email" value="unaialdana@gmail.com" />
+          <div class="field-hint">(from your profile)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div>
+      <div class="sec-label muted">Payment method</div>
+      <div class="pay">
+        <div class="pay-left">
+          <div class="pay-logo"> Pay</div>
+          <div>
+            <div class="pay-text">Apple Pay · •••• 4242</div>
+            <div class="pay-sub">Touch ID confirmation at checkout</div>
+          </div>
+        </div>
+        <a href="#" class="change">Change</a>
+      </div>
+    </div>
+
+    <!-- ADDONS -->
+    <div>
+      <div class="sec-label">Suggested for your stay</div>
+      <div class="addons">
+        {% for a in addons %}
+        <label class="addon" onclick="toggleRadio(this)">
+          <div class="radio{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
+          <div>
+            <div class="addon-title">{{ a.title }}</div>
+            <div class="addon-why">{{ a.reason }}</div>
+          </div>
+          <div class="addon-price{% if a.price in ['Free','Gratis','Included'] %} free{% endif %}">{{ a.price }}</div>
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="total">
+      <div class="total-block">
+        <div class="total-strike">€{{ savings.booking_total|round|int }} on other sites</div>
+        <div class="total-amt">€{{ savings.direct_total|round|int }}</div>
+        <div class="total-save">You save €{{ savings.saving_total|round|int }} direct</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <a href="#" class="primary" onclick="completeBooking(event)">
+      Complete reservation
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+
+    <div class="secure">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secure <span class="sep">·</span> 3-sec booking <span class="sep">·</span> Cancel free until arrival
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="row" style="gap:16px;">
+      <span class="wordmark-f">paraty</span>
+      <span class="copy">© 2026 · Built for independent hoteliers</span>
+    </div>
+    <div class="legal">
+      <a href="#">Privacy</a><span class="sep">·</span>
+      <a href="#">Terms</a><span class="sep">·</span>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+  function toggleRadio(el){
+    const me = el.querySelector('.radio');
+    me.classList.toggle('on');
+  }
+  function completeBooking(e){
+    e.preventDefault();
+    alert("This is a prototype — no real booking is made. In production, this is where the Paraty booking API call would fire.");
+    window.location.href = "/";
+  }
+</script>
+</body>
+</html>

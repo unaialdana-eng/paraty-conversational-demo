@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Paraty — Málaga · 3 nights · July</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-cyan:#0088CC;
+    --brand-cyan-hover:#0099E6;
+    --brand-cyan-soft:#F0F7FC;
+    --brand-navy:#0F3457;
+    --brand-teal:#00A896;
+    --brand-teal-soft:#E6FBF7;
+    --brand-teal-deep:#007A6B;
+    --white:#FFFFFF;
+    --bg:#F7F9FB;
+    --border:#DFE3E8;
+    --border-soft:#EEF0F3;
+    --text:#1F2937;
+    --muted:#6B7280;
+    --faint:#9CA3AF;
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-pill:999px;
+    --sh-card:0 1px 3px rgba(15,52,87,0.06);
+    --sh-hover:0 4px 16px rgba(15,52,87,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;}
+  body{font-family:'Montserrat',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;}
+  .page{width:1440px;background:var(--bg);}
+
+  /* Type */
+  .t-caption{font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+  .t-h2{font:700 28px/36px 'Montserrat';letter-spacing:-0.01em;color:var(--brand-navy);}
+
+  /* Header */
+  .header{
+    height:72px;padding:24px 40px;background:var(--white);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wordmark{font:700 20px/1 'Montserrat';color:var(--brand-cyan);letter-spacing:-0.01em;}
+  .wordmark sup{font:500 10px/1 'JetBrains Mono';color:var(--brand-teal);margin-left:4px;letter-spacing:0.04em;vertical-align:top;}
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .nav-link{font:500 14px/20px 'Montserrat';color:var(--brand-navy);text-decoration:none;cursor:pointer;}
+  .nav-link:hover{color:var(--brand-cyan)}
+  .icon-btn{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;color:var(--brand-navy);cursor:pointer;}
+
+  /* Layout shell — sidebar + main */
+  .shell{width:1360px;margin:16px auto 0;display:grid;grid-template-columns:360px 1fr;gap:28px;padding-bottom:80px;align-items:start;}
+
+  /* Content container (right column) */
+  .content{display:flex;flex-direction:column;gap:24px;min-width:0;}
+
+  /* ============ AI CONCIERGE SIDEBAR ============ */
+  .concierge{
+    position:sticky;top:16px;
+    background:var(--white);border:1px solid var(--border);border-radius:10px;
+    box-shadow:var(--sh-card);
+    display:flex;flex-direction:column;overflow:hidden;
+    height:calc(100vh - 32px);
+  }
+  .cg-head{
+    display:flex;align-items:center;gap:12px;
+    padding:18px 20px;border-bottom:1px solid var(--border-soft);
+  }
+  .cg-avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:var(--brand-cyan);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 11px/1 'JetBrains Mono';letter-spacing:0.08em;
+    flex-shrink:0;
+  }
+  .cg-who{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .cg-name{font:700 15px/20px 'Montserrat';color:var(--brand-navy);}
+  .cg-status{
+    font:500 12px/16px 'Montserrat';color:var(--brand-teal-deep);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .cg-status .pulse{
+    width:6px;height:6px;border-radius:50%;background:var(--brand-teal);
+    box-shadow:0 0 0 0 rgba(0,168,150,0.6);
+    animation:pulse 1.8s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(0,168,150,0.5);}
+    100%{box-shadow:0 0 0 8px rgba(0,168,150,0);}
+  }
+
+  .cg-scroll{
+    flex:1 1 0;min-height:0;overflow-y:auto;
+    padding:16px 20px 8px;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .cg-scroll::-webkit-scrollbar{width:6px;}
+  .cg-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+  .bubble{
+    background:var(--brand-cyan-soft);
+    border-radius:4px 12px 12px 12px;
+    padding:12px 14px;
+    font:500 13px/20px 'Montserrat';color:var(--text);
+    text-wrap:pretty;
+  }
+  .bubble strong{color:var(--brand-navy);font-weight:700;}
+  .bubble em{font-style:normal;color:var(--brand-cyan);font-weight:600;}
+
+  .sug-stack{display:flex;flex-direction:column;gap:8px;}
+  .sug{
+    text-align:left;width:100%;
+    background:#fff;border:1.5px solid var(--brand-cyan);
+    border-radius:var(--r-sm);padding:11px 14px;
+    font:600 13px/18px 'Montserrat';color:var(--brand-navy);
+    cursor:pointer;transition:all .15s ease;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+  }
+  .sug:hover{background:var(--brand-cyan);color:#fff;}
+  .sug .arr{color:var(--brand-cyan);font-size:14px;line-height:1;transition:color .15s ease;}
+  .sug:hover .arr{color:#fff;}
+
+  .cg-caption{
+    font:500 12px/16px 'Montserrat';color:var(--muted);
+    padding:4px 2px 0;
+  }
+
+  .addon{
+    border:1px solid var(--border);border-radius:var(--r-sm);
+    padding:12px 14px;background:#fff;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+    cursor:pointer;transition:border-color .15s ease;
+  }
+  .addon:hover{border-color:var(--brand-cyan);}
+  .addon-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .addon-title{font:700 13px/18px 'Montserrat';color:var(--brand-navy);}
+  .addon-sub{font:500 12px/16px 'Montserrat';color:var(--muted);}
+  .addon-price{font:700 14px/18px 'Montserrat';color:var(--brand-teal-deep);white-space:nowrap;}
+
+  /* Booking footer */
+  .cg-foot{
+    border-top:1px solid var(--border-soft);
+    padding:16px 20px 18px;display:flex;flex-direction:column;gap:12px;
+    background:#fff;
+  }
+  .ready{
+    background:var(--brand-teal-soft);
+    border-radius:var(--r-sm);padding:14px 16px;
+    display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;
+  }
+  .ready-label{
+    font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--brand-teal-deep);
+  }
+  .ready-price{font:700 28px/32px 'Montserrat';letter-spacing:-0.01em;color:var(--brand-navy);}
+  .ready-detail{font:500 12px/16px 'Montserrat';color:var(--muted);}
+  .express{
+    display:block;width:100%;text-align:center;
+    padding:13px 16px;border-radius:var(--r-sm);
+    background:var(--brand-cyan);color:#fff;
+    font:700 14px/20px 'Montserrat';letter-spacing:-0.01em;
+    text-decoration:none;transition:background .15s ease;
+  }
+  .express:hover{background:var(--brand-cyan-hover);}
+
+  /* Input */
+  .cg-input{
+    position:relative;
+    border:1px solid var(--border);border-radius:var(--r-sm);
+    background:#fff;padding:4px 4px 4px 12px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .cg-input:focus-within{border-color:var(--brand-cyan);}
+  .cg-input input{
+    flex:1;border:0;outline:0;background:transparent;
+    font:500 13px/20px 'Montserrat';color:var(--text);padding:8px 0;
+  }
+  .cg-input input::placeholder{color:var(--faint);}
+  .cg-send{
+    width:32px;height:32px;border-radius:var(--r-xs);border:0;
+    background:var(--brand-navy);color:#fff;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .cg-send:hover{background:var(--brand-cyan);}
+
+  /* ======= SEARCH BAR (traditional editable) ======= */
+  .searchbar{
+    background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);
+    box-shadow:var(--sh-card);padding:10px;
+    display:grid;grid-template-columns:1.4fr 1.2fr 1fr auto;gap:0;align-items:stretch;
+  }
+  .sb-field{
+    padding:10px 14px;display:flex;flex-direction:column;gap:3px;
+    border-right:1px solid var(--border-soft);cursor:pointer;
+    transition:background .12s ease;border-radius:var(--r-sm);
+  }
+  .sb-field:hover{background:var(--brand-cyan-soft);}
+  .sb-label{
+    font:700 10px/12px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .sb-value{
+    font:600 14px/20px 'Montserrat';color:var(--brand-navy);
+    display:flex;align-items:center;gap:6px;
+  }
+  .sb-value .sb-icon{color:var(--brand-cyan);flex-shrink:0;}
+  .sb-sub{font:500 12px/16px 'Montserrat';color:var(--muted);}
+  .sb-search{
+    margin-left:10px;padding:0 22px;border:0;border-radius:var(--r-sm);
+    background:var(--brand-cyan);color:#fff;cursor:pointer;
+    font:700 13px/18px 'Montserrat';letter-spacing:-0.01em;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .sb-search:hover{background:var(--brand-cyan-hover);}
+
+  /* ======= FILTER BAR ======= */
+  .filterbar{
+    background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);
+    box-shadow:var(--sh-card);
+    padding:12px 16px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .fb-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;min-width:0;}
+  .fb-label{
+    font:700 10px/14px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);margin-right:4px;
+  }
+  .fb-chip{
+    padding:7px 12px;border-radius:var(--r-pill);
+    background:#fff;border:1px solid var(--border);
+    font:600 12px/16px 'Montserrat';color:var(--brand-navy);
+    cursor:pointer;transition:all .15s ease;
+    display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  }
+  .fb-chip:hover{border-color:var(--brand-cyan);color:var(--brand-cyan);}
+  .fb-chip svg{color:var(--muted);}
+  .fb-chip.active{
+    background:var(--brand-cyan-soft);border-color:var(--brand-cyan);color:var(--brand-cyan);
+  }
+  .fb-chip.active svg{color:var(--brand-cyan);}
+  .fb-divider{width:1px;height:24px;background:var(--border-soft);margin:0 4px;}
+  .fb-clear{
+    background:transparent;border:0;cursor:pointer;
+    font:600 12px/16px 'Montserrat';color:var(--muted);
+    text-decoration:underline;padding:6px 4px;
+  }
+  .fb-clear:hover{color:var(--brand-cyan);}
+
+  /* Results meta */
+  .meta{display:flex;align-items:center;justify-content:space-between;padding:0 4px;}
+  .meta-count{
+    font:500 13px/18px 'Montserrat';color:var(--muted);
+  }
+  .meta-count strong{color:var(--brand-navy);font-weight:700;}
+  .sort{display:flex;align-items:center;gap:12px;font:500 13px/18px 'Montserrat';color:var(--muted);}
+  .sort select{
+    border:1px solid var(--border);background:#fff;border-radius:var(--r-sm);
+    font:600 13px/18px 'Montserrat';color:var(--brand-navy);
+    padding:6px 10px;cursor:pointer;
+  }
+
+  /* Cards */
+  .cards{display:flex;flex-direction:column;gap:20px;}
+  .card{
+    display:grid;grid-template-columns:260px 1fr 220px;
+    background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);
+    box-shadow:var(--sh-card);overflow:hidden;
+    transition:border-color .18s ease, box-shadow .18s ease;
+    min-height:260px;
+  }
+  .card:hover{border-color:var(--brand-cyan);box-shadow:var(--sh-hover);}
+  .card:hover .c-image img{transform:scale(1.03);}
+
+  .c-image{
+    position:relative;width:260px;height:260px;overflow:hidden;
+    background:linear-gradient(135deg,var(--brand-navy),var(--brand-cyan));
+  }
+  .c-image img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .35s ease;
+  }
+  .discount{
+    position:absolute;top:12px;left:12px;
+    padding:6px 10px;border-radius:var(--r-xs);
+    background:rgba(15,52,87,0.92);
+    backdrop-filter:blur(6px);
+    font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:#fff;
+  }
+  .partner{
+    position:absolute;bottom:12px;left:12px;
+    padding:5px 10px;border-radius:var(--r-xs);
+    background:rgba(255,255,255,0.95);
+    font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--brand-cyan);
+  }
+
+  .c-identity{
+    padding:24px 28px;display:flex;flex-direction:column;gap:10px;justify-content:space-between;min-width:0;
+  }
+  .c-title-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .c-title{font:700 18px/24px 'Montserrat';letter-spacing:-0.01em;color:var(--brand-navy);}
+  .type-chip{
+    padding:3px 10px;border-radius:var(--r-xs);
+    background:var(--brand-cyan-soft);
+    font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--brand-cyan);
+  }
+  .c-location{
+    display:flex;align-items:center;gap:8px;
+    font:500 13px/18px 'Montserrat';color:var(--muted);
+  }
+  .c-location .dot{color:var(--brand-cyan);font-size:14px;line-height:1;}
+  .c-location .sep{color:var(--faint);}
+  .ai-quote{
+    background:var(--bg);border-left:3px solid var(--brand-cyan);
+    border-radius:0 var(--r-sm) var(--r-sm) 0;padding:12px 16px;
+    font:500 italic 15px/23px 'Montserrat';color:var(--text);
+    text-wrap:pretty;
+  }
+  .ai-quote::before{
+    content:"AI";display:inline-block;
+    font:700 9px/1 'JetBrains Mono';letter-spacing:0.08em;
+    color:var(--brand-cyan);background:#fff;border:1px solid var(--brand-cyan);
+    padding:3px 5px;border-radius:var(--r-xs);margin-right:8px;vertical-align:2px;font-style:normal;
+  }
+  .features{display:flex;flex-wrap:wrap;column-gap:20px;row-gap:4px;}
+  .feat{display:inline-flex;align-items:center;gap:6px;font:500 13px/20px 'Montserrat';color:var(--text);}
+  .feat svg{color:var(--brand-teal);flex-shrink:0;}
+
+  .c-side{
+    border-left:1px solid var(--border-soft);
+    padding:24px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;
+  }
+  .review{display:flex;align-items:center;gap:10px;justify-content:flex-end;}
+  .review-labels{display:flex;flex-direction:column;gap:2px;align-items:flex-end;}
+  .review-word{font:700 13px/16px 'Montserrat';color:var(--brand-navy);}
+  .review-count{font:500 12px/16px 'Montserrat';color:var(--muted);}
+  .review-pill{
+    width:44px;height:32px;background:var(--brand-cyan);color:#fff;
+    border-radius:4px 4px 4px 0;
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 14px/1 'Montserrat';
+  }
+  .price{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+  .price-caption{font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+  .price-strike{font:500 13px/16px 'Montserrat';color:var(--faint);text-decoration:line-through;}
+  .price-hero{font:700 26px/28px 'Montserrat';letter-spacing:-0.01em;color:var(--brand-navy);}
+  .price-unit{font:500 12px/16px 'Montserrat';color:var(--muted);}
+  .save{
+    padding:5px 10px;border-radius:var(--r-xs);
+    background:var(--brand-teal-soft);
+    font:700 12px/16px 'Montserrat';color:var(--brand-teal-deep);
+    margin-top:2px;
+  }
+  .cta{
+    width:100%;padding:12px 16px;
+    background:var(--brand-cyan);color:#fff;border:0;
+    border-radius:var(--r-sm);
+    font:600 14px/20px 'Montserrat';
+    cursor:pointer;transition:background .15s ease;
+    margin-top:6px;
+    text-decoration:none;text-align:center;display:block;
+  }
+  .cta:hover{background:var(--brand-cyan-hover);}
+
+  /* Refinement */
+  .refine{
+    display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:32px;
+  }
+  .refine-divider{display:flex;align-items:center;gap:16px;width:100%;}
+  .refine-divider .line{flex:1;height:1px;background:var(--border-soft);max-width:400px;}
+  .refine-divider .label{font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+  .chip-grid{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:900px;}
+  .r-chip{
+    padding:10px 16px;border-radius:var(--r-pill);
+    background:#fff;border:1.5px solid var(--brand-cyan);
+    font:600 13px/18px 'Montserrat';color:var(--brand-navy);
+    cursor:pointer;transition:all .15s ease;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .r-chip:hover{background:var(--brand-cyan);color:#fff;}
+  .r-chip svg{opacity:.7}
+  .r-chip:hover svg{opacity:1}
+
+  /* Footer */
+  .footer{
+    height:80px;padding:24px 40px;background:var(--brand-navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .footer .copy{font:500 14px/20px 'Montserrat';color:rgba(255,255,255,0.7);}
+  .footer .wordmark-f{font:700 14px/20px 'Montserrat';color:#fff;}
+  .footer .legal{display:flex;gap:20px;}
+  .footer .legal a{color:rgba(255,255,255,0.7);text-decoration:none;font:500 14px/20px 'Montserrat';}
+  .footer .legal a:hover{color:#fff;}
+  .footer .legal .sep{color:rgba(255,255,255,0.3);}
+
+  .row{display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="Paraty Results">
+
+  <header class="header">
+    <a href="/app" class="wordmark" style="text-decoration:none">paraty<sup>ai</sup></a>
+    <nav class="nav-right">
+      <a class="nav-link" href="/">About the demo</a>
+      <a class="nav-link" href="#">Hosts</a>
+      <a class="nav-link" href="#">Journal</a>
+      <a class="nav-link" href="#">Log in</a>
+      <span class="icon-btn" aria-label="Saved trips">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
+      </span>
+    </nav>
+  </header>
+
+  <div class="shell">
+
+  <!-- ============ AI CONCIERGE (LEFT) ============ -->
+  <aside class="concierge" aria-label="Paraty Assistant">
+    <div class="cg-head">
+      <div class="cg-avatar">AI</div>
+      <div class="cg-who">
+        <div class="cg-name">Paraty Assistant</div>
+        <div class="cg-status"><span class="pulse"></span>Here to help</div>
+      </div>
+    </div>
+
+    <div class="cg-scroll">
+      <div class="bubble">{{ conversation.opening | safe }}</div>
+
+      {% for b in conversation.bubbles %}
+        {% if b.kind == 'text' %}
+          <div class="bubble">{{ b.html | safe }}</div>
+        {% elif b.kind == 'suggestions' %}
+          <div class="sug-stack">
+            {% for item in b['items'] %}
+              <button class="sug" type="button">{{ item }} <span class="arr">→</span></button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="cg-foot">
+      {% if conversation.top_hotel %}
+      <div class="ready">
+        <div class="ready-label">Ready to book?</div>
+        <div class="ready-price">€{{ conversation.ready_price }}</div>
+        <div class="ready-detail">{{ conversation.ready_nights }} night{% if conversation.ready_nights != 1 %}s{% endif %} · {{ conversation.top_hotel.name }}</div>
+      </div>
+      <a href="/checkout/{{ conversation.top_hotel.id }}?q={{ q|urlencode }}" class="express">Express checkout →</a>
+      {% endif %}
+      <div class="cg-input">
+        <input type="text" placeholder="Ask anything about these stays…" aria-label="Ask the assistant"/>
+        <button class="cg-send" aria-label="Send">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- SEARCH BAR (traditional editable) -->
+    <form class="searchbar" aria-label="Edit search" action="/search" method="POST">
+      <input type="hidden" name="q" value="{{ q }}"/>
+      <div class="sb-field">
+        <div class="sb-label">Destination</div>
+        <div class="sb-value">
+          <svg class="sb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {{ intent.destination or 'Any destination' }}
+        </div>
+      </div>
+      <div class="sb-field">
+        <div class="sb-label">Check-in · Check-out</div>
+        <div class="sb-value">
+          <svg class="sb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          {% if intent.check_in and intent.check_out %}{{ intent.check_in }} — {{ intent.check_out }}{% else %}Flexible{% endif %}
+        </div>
+        <div class="sb-sub">{{ nights }} night{% if nights != 1 %}s{% endif %}</div>
+      </div>
+      <div class="sb-field">
+        <div class="sb-label">Guests</div>
+        <div class="sb-value">
+          <svg class="sb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} · {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}
+        </div>
+        <div class="sb-sub">1 room</div>
+      </div>
+      <button class="sb-search" aria-label="Update search" type="submit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Update
+      </button>
+    </form>
+
+    <!-- FILTER BAR -->
+    <section class="filterbar" aria-label="Filters">
+      <div class="fb-group">
+        <span class="fb-label">Filters</span>
+        {% if intent.max_price_per_night %}
+        <button class="fb-chip active">
+          Under €{{ intent.max_price_per_night }}/night
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        {% endif %}
+        {% for am in (intent.required_amenities or [])[:3] %}
+        <button class="fb-chip active">
+          {{ am|replace('_', ' ')|title }}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        {% endfor %}
+        <span class="fb-divider"></span>
+        <button class="fb-chip">
+          Price
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="fb-chip">
+          Property type
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="fb-chip">
+          Guest rating
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="fb-chip">
+          Amenities
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="fb-chip">
+          Neighbourhood
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="fb-chip">
+          More
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+      </div>
+      <button class="fb-clear">Clear all</button>
+    </section>
+
+    <!-- META -->
+    <div class="meta">
+      <div class="meta-count"><strong>{{ cards|length }} propert{% if cards|length == 1 %}y{% else %}ies{% endif %}</strong> matching your stay</div>
+      <div class="sort">
+        <label for="sort">Sort by</label>
+        <select id="sort">
+          <option>Best match</option>
+          <option>Price · low to high</option>
+          <option>Price · high to low</option>
+          <option>Guest rating</option>
+          <option>Distance from centre</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards">
+      {% for c in cards %}
+      {% set h = c.h %}
+      {% set sv = c.savings %}
+      <article class="card">
+        <a class="c-image" href="/property/{{ h.id }}?q={{ q|urlencode }}">
+          {% if h.image_url %}
+          <img src="{{ h.image_url }}" alt="{{ h.name }}"/>
+          {% endif %}
+          {% if sv.saving_pct and sv.saving_pct >= 8 %}
+          <span class="discount">−{{ sv.saving_pct|round|int }}%</span>
+          {% endif %}
+          {% if h.paraty_client_since and h.paraty_client_since <= 2023 %}
+          <span class="partner">Paraty Direct</span>
+          {% endif %}
+        </a>
+        <div class="c-identity">
+          <div class="row" style="gap:12px;flex-wrap:wrap;align-items:baseline;">
+            <h3 class="c-title">{{ h.name }}</h3>
+            {% if h.property_type %}
+            <span class="type-chip">{{ h.property_type|replace('_', ' ')|title }}</span>
+            {% endif %}
+          </div>
+          <div class="c-location"><span class="dot">●</span>{{ h.city }}, {{ h.country }} <span class="sep">·</span> {{ h.rooms }} rooms</div>
+          <div class="ai-quote">{{ c.just }}</div>
+          <div class="features">
+            {% set _feature_labels = {
+              'pool':'Pool','rooftop_pool':'Rooftop pool','infinity_pool':'Infinity pool',
+              'beach_access':'Beach access','spa':'Spa','gym':'Gym',
+              'free_wifi':'Free WiFi','breakfast_included':'Breakfast included',
+              'family_room':'Family rooms','kids_club':'Kids club',
+              'restaurant':'Restaurant','bar':'Bar','business_center':'Business center',
+              'rooftop_bar':'Rooftop bar','rooftop_terrace':'Rooftop terrace',
+              'all_inclusive':'All-inclusive','air_conditioning':'Air conditioning',
+              'caldera_view':'Caldera view','harbor_view':'Harbour view',
+              'ocean_view':'Ocean view','mountain_view':'Mountain view',
+              'river_view':'River view','courtyard':'Courtyard'
+            } %}
+            {% set _priority = ['pool','infinity_pool','rooftop_pool','beach_access','spa','family_room','kids_club','breakfast_included','gym','rooftop_terrace','rooftop_bar','caldera_view','harbor_view','restaurant','free_wifi'] %}
+            {% set ordered = [] %}
+            {% for a in _priority %}{% if a in h.amenities and a not in ordered %}{{ ordered.append(a) or '' }}{% endif %}{% endfor %}
+            {% for a in h.amenities %}{% if a not in ordered %}{{ ordered.append(a) or '' }}{% endif %}{% endfor %}
+            {% for a in ordered[:4] %}
+            <span class="feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>{{ _feature_labels.get(a, a|replace('_',' ')|title) }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        <aside class="c-side">
+          <div class="review">
+            <div class="review-labels">
+              <div class="review-word">{{ c.review_label }}</div>
+              <div class="review-count">{{ c.review_count }} reviews</div>
+            </div>
+            <div class="review-pill">{{ '%.1f'|format(h.avg_rating or 0) }}</div>
+          </div>
+          <div class="price">
+            <div class="price-caption">{{ nights }} night{% if nights != 1 %}s{% endif %} · {{ (intent.adults or 2) + (intent.children or 0) }} guest{% if ((intent.adults or 2) + (intent.children or 0)) != 1 %}s{% endif %}</div>
+            <div class="price-strike">€{{ sv.booking_total|round|int }}</div>
+            <div class="price-hero">€{{ sv.direct_total|round|int }}</div>
+            <div class="price-unit">€{{ h.direct_price_per_night|round|int }} / night</div>
+            <div class="save">Save €{{ sv.saving_total|round|int }} direct</div>
+            <a href="/property/{{ h.id }}?q={{ q|urlencode }}" class="cta">Book direct</a>
+          </div>
+        </aside>
+      </article>
+      {% endfor %}
+
+      {% if not cards %}
+      <div style="padding:64px 20px;text-align:center;background:#fff;border:1px dashed var(--border);border-radius:var(--r-md);">
+        <div style="font:700 18px/26px 'Montserrat';color:var(--brand-navy);margin-bottom:8px;">No hotels match those criteria.</div>
+        <div style="font:500 14px/22px 'Montserrat';color:var(--muted);">Try relaxing price, amenities, or destination — the assistant can help you narrow down.</div>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- REFINEMENT -->
+    <section class="refine">
+      <div class="refine-divider">
+        <div class="line"></div>
+        <div class="label">Want to narrow?</div>
+        <div class="line"></div>
+      </div>
+      <div class="chip-grid">
+        <button class="r-chip">Closer to the beach</button>
+        <button class="r-chip">Under €180</button>
+        <button class="r-chip">Rooftop pool</button>
+        <button class="r-chip">Kids club</button>
+        <button class="r-chip">Historic centre</button>
+        <button class="r-chip">Walk to beach</button>
+      </div>
+    </section>
+
+  </main>
+
+  </div>
+
+  <footer class="footer">
+    <div class="row" style="gap:16px;">
+      <span class="wordmark-f">paraty</span>
+      <span class="copy">© 2026 · Built for independent hoteliers</span>
+    </div>
+    <div class="legal">
+      <a href="#">Privacy</a><span class="sep">·</span>
+      <a href="#">Terms</a><span class="sep">·</span>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+  // Scroll the concierge panel to the latest message on load
+  function scrollConciergeToBottom(){
+    const scroll = document.querySelector('.cg-scroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  }
+  window.addEventListener('load', () => requestAnimationFrame(scrollConciergeToBottom));
+  document.addEventListener('DOMContentLoaded', scrollConciergeToBottom);
+</script>
+</body>
+</html>

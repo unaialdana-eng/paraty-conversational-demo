@@ -101,7 +101,7 @@ Rules:
 - Address the user's query DIRECTLY — connect the hotel's amenities and character to the traveller's stated need (destination, dates, who is travelling, budget, what matters to them).
 - Hotelier-friendly tone: specific, factual, natural prose. Never generic marketing copy.
 - Reference the hotel's actual amenities / characteristics that match the query. Name them.
-- Write in the same language as the user's query (Spanish query → Spanish justification; English query → English justification).
+- Always write in English, regardless of the language the user's query was written in. This is product UI copy, not a chat message.
 - Never mention Booking.com, OTAs, partnerships, or Paraty Tech itself in the text — the UI handles all meta-context; focus purely on the query ↔ hotel fit.
 - Never hallucinate amenities that aren't in the hotel's listed amenities.
 
@@ -122,6 +122,88 @@ def build_intent_parse_request(user_query: str) -> list:
                 f"Examples:\n\n{examples_text}\n\n"
                 f"Now parse this query and return ONLY the JSON object (no prose):\n\n"
                 f"User query: {user_query}"
+            ),
+        }
+    ]
+
+
+CONCIERGE_OPENING_SYSTEM = """You are a warm, knowledgeable travel concierge for Paraty Tech's AI booking layer. You write the opening message in a chat sidebar after the traveller's query has been parsed and hotels have been shortlisted.
+
+Voice: first person ("I found..."), conversational, specific. Not salesy. Not generic. Sound like a real human concierge who knows these hotels.
+
+Rules:
+- 1-2 sentences total.
+- Reference: how many hotels matched, the destination, and ONE other relevant constraint (price cap OR nights OR amenity OR trip purpose). Pick the most salient.
+- Wrap key facts in <strong>…</strong>. Wrap money amounts or emphasised words in <em>…</em>.
+- Match the language of the user's query (Spanish → Spanish; English → English).
+- Never invent hotel names, prices or dates not in the data provided.
+- Never mention Booking.com, Paraty Tech, or the system internals.
+
+Return ONLY the bubble HTML text. No JSON, no code fences, no surrounding prose."""
+
+
+PROPERTY_PAGE_SYSTEM = """You are generating page content for a single hotel detail page on Paraty Tech's AI-native direct-booking platform. You receive a hotel object and a parsed user intent, and return a JSON object with several sections of content for that hotel.
+
+Voice: warm, specific, grounded. Never marketing fluff. Reference the hotel's actual amenities, city, property type, and the user's intent (who is travelling, nights, budget, kids).
+
+Match the language of the user's query (Spanish query → Spanish content; English query → English content).
+
+Return ONLY valid JSON. No prose, no code fences. Schema:
+
+{
+  "owner_voice": [string, string],           // exactly 2 short paragraphs, first-person from the owners/team. Max 35 words each. Grounded in the hotel's description and property_type.
+  "owner_signature": string,                 // who signs (e.g. "The García family — third-generation hoteliers" or "The team at Hotel X"). Invent a plausible family name or simply say "The Hotel X team" if unclear.
+  "neighbourhood": [                          // exactly 6 plausible walkable landmarks for the hotel's city
+    {"name": string, "walk_time": string, "icon": string}   // icon is one of: plaza, monument, museum, market, port, beach, park, restaurant
+  ],
+  "concierge_opening": string,                // 1-2 sentences introducing the hotel to the traveller, referencing their intent. Use <strong> for facts, <em> for emphasis.
+  "proactive_questions": [string, string, string, string],  // exactly 4 suggested questions a traveller WITH THIS INTENT would ask. Be specific to the hotel (pool if amenities has pool; quiet rooms if urban; family-relevant if children > 0). Questions must be natural language, no hashtags.
+  "contextual_alert": string,                 // 1-2 sentences with a practical tip or warning tailored to the intent (e.g. late-season heat, local custom, arrival logistics). Use <strong> and <em> for emphasis. Plausibly grounded — do not invent airline flight numbers.
+  "addons": [                                 // exactly 3 add-ons with AI reasoning tied to intent + hotel
+    {"title": string, "reason": string, "price": string}   // price format: "+ €42" or "+ €15" or "Free"
+  ]
+}
+
+Hard constraints:
+- Never name a specific real person unless it's the owner's name you're inventing for the owner_voice.
+- Do not invent amenities the hotel doesn't have.
+- Keep all copy under 2 sentences unless the schema says otherwise.
+- Addons must feel contextually justified. If children > 0, at least one addon should be family-relevant. If arriving late or on weekend, transfer justification must reference that."""
+
+
+def build_concierge_opening_request(user_query: str, intent: dict, hotels: list) -> list:
+    """Build messages for the opening concierge bubble on the results page."""
+    import json as _json
+    slim_hotels = [
+        {"id": h["id"], "name": h["name"], "city": h["city"],
+         "direct_price_per_night": h["direct_price_per_night"],
+         "amenities": h["amenities"][:5]}
+        for h in hotels
+    ]
+    return [
+        {
+            "role": "user",
+            "content": (
+                f"User query: {user_query}\n\n"
+                f"Parsed intent:\n{_json.dumps(intent, ensure_ascii=False, indent=2)}\n\n"
+                f"Matched hotels ({len(slim_hotels)}):\n{_json.dumps(slim_hotels, ensure_ascii=False, indent=2)}\n\n"
+                f"Write the opening bubble."
+            ),
+        }
+    ]
+
+
+def build_property_page_request(user_query: str, intent: dict, hotel: dict) -> list:
+    """Build messages for the full property-page content generation."""
+    import json as _json
+    return [
+        {
+            "role": "user",
+            "content": (
+                f"User query: {user_query or '(no query — direct navigation)'}\n\n"
+                f"Parsed intent:\n{_json.dumps(intent, ensure_ascii=False, indent=2)}\n\n"
+                f"Hotel:\n{_json.dumps(hotel, ensure_ascii=False, indent=2)}\n\n"
+                f"Return the JSON content object."
             ),
         }
     ]

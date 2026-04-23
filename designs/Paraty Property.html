@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Paraty — Hotel Kent, Málaga</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-cyan:#0088CC;
+    --brand-cyan-hover:#0099E6;
+    --brand-cyan-soft:#F0F7FC;
+    --brand-navy:#0F3457;
+    --brand-teal:#00A896;
+    --brand-teal-soft:#E6FBF7;
+    --brand-teal-deep:#007A6B;
+    --white:#FFFFFF;
+    --bg:#F7F9FB;
+    --border:#DFE3E8;
+    --border-soft:#EEF0F3;
+    --text:#1F2937;
+    --muted:#6B7280;
+    --faint:#9CA3AF;
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-pill:999px;
+    --sh-card:0 1px 3px rgba(15,52,87,0.06);
+    --sh-hover:0 4px 16px rgba(15,52,87,0.10);
+    --sh-bar:0 8px 24px rgba(15,52,87,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;}
+  body{font-family:'Montserrat',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;}
+  .page{width:1440px;background:var(--white);position:relative;}
+
+  /* Header */
+  .header{
+    position:absolute;top:0;left:0;right:0;z-index:5;
+    height:72px;padding:24px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wordmark{font:700 20px/1 'Montserrat';color:#fff;letter-spacing:-0.01em;text-decoration:none;}
+  .wordmark sup{font:500 10px/1 'JetBrains Mono';color:#CFE9F6;margin-left:4px;letter-spacing:0.04em;vertical-align:top;}
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .nav-link{font:500 14px/20px 'Montserrat';color:#fff;text-decoration:none;cursor:pointer;opacity:.88;}
+  .nav-link:hover{opacity:1}
+  .icon-btn{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;opacity:.88}
+
+  /* Hero */
+  .hero{
+    position:relative;height:70vh;min-height:640px;overflow:hidden;background:var(--brand-navy);
+  }
+  .hero img{width:100%;height:100%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,20,35,0.45) 0%, rgba(10,20,35,0) 30%, rgba(10,20,35,0) 55%, rgba(10,20,35,0.75) 100%);
+  }
+  .hero-copy{
+    position:absolute;left:0;right:0;bottom:56px;padding:0 60px;z-index:2;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .hero-eyebrow{
+    font:700 11px/14px 'Montserrat';letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.82);
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero-eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--brand-teal);box-shadow:0 0 0 4px rgba(0,168,150,0.25);}
+  .hero-title{
+    font:800 64px/72px 'Montserrat';letter-spacing:-0.03em;color:#fff;
+  }
+  .hero-sub{
+    font:500 16px/24px 'Montserrat';color:rgba(255,255,255,0.88);
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .hero-sub .dot{color:#CFE9F6;}
+
+  /* Sticky reserve bar */
+  .reserve-bar{
+    position:sticky;top:0;z-index:10;
+    height:64px;background:#fff;box-shadow:var(--sh-bar);
+    display:flex;align-items:center;justify-content:space-between;padding:0 40px;
+  }
+  .rb-left{display:flex;align-items:center;gap:16px;}
+  .rb-name{font:700 15px/20px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.01em;}
+  .rb-meta{font:500 13px/18px 'Montserrat';color:var(--muted);}
+  .rb-right{display:flex;align-items:center;gap:20px;}
+  .rb-dates{font:600 14px/20px 'Montserrat';color:var(--brand-navy);}
+  .rb-dates .sep{color:var(--faint);margin:0 8px;}
+  .rb-dates .price{color:var(--brand-navy);font-weight:700;}
+  .rb-cta{
+    padding:10px 20px;background:var(--brand-cyan);color:#fff;border:0;border-radius:var(--r-sm);
+    font:600 14px/20px 'Montserrat';cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  }
+  .rb-cta:hover{background:var(--brand-cyan-hover);}
+
+  /* Layout shell — sidebar + main */
+  .shell{display:grid;grid-template-columns:360px 1fr;gap:0;align-items:start;}
+  .main-col{min-width:0;}
+
+  /* ============ AI CONCIERGE SIDEBAR ============ */
+  .concierge{
+    position:sticky;top:80px;
+    margin:24px 0 24px 24px;
+    background:var(--white);border:1px solid var(--border);border-radius:10px;
+    box-shadow:var(--sh-card);
+    display:flex;flex-direction:column;overflow:hidden;
+    height:calc(100vh - 104px);
+  }
+  .cg-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border-soft);}
+  .cg-avatar{width:40px;height:40px;border-radius:50%;background:var(--brand-cyan);color:#fff;display:inline-flex;align-items:center;justify-content:center;font:700 11px/1 'JetBrains Mono';letter-spacing:0.08em;flex-shrink:0;}
+  .cg-who{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .cg-name{font:700 15px/20px 'Montserrat';color:var(--brand-navy);}
+  .cg-status{font:500 12px/16px 'Montserrat';color:var(--brand-teal-deep);display:inline-flex;align-items:center;gap:6px;}
+  .cg-status .pulse{width:6px;height:6px;border-radius:50%;background:var(--brand-teal);box-shadow:0 0 0 0 rgba(0,168,150,0.6);animation:pulse 1.8s ease-out infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,168,150,0.5);}100%{box-shadow:0 0 0 8px rgba(0,168,150,0);}}
+  .cg-scroll{flex:1 1 0;min-height:0;overflow-y:auto;padding:16px 20px 8px;display:flex;flex-direction:column;gap:12px;}
+  .cg-scroll::-webkit-scrollbar{width:6px;}
+  .cg-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  .bubble{background:var(--brand-cyan-soft);border-radius:4px 12px 12px 12px;padding:12px 14px;font:500 13px/20px 'Montserrat';color:var(--text);text-wrap:pretty;}
+  .bubble strong{color:var(--brand-navy);font-weight:700;}
+  .bubble em{font-style:normal;color:var(--brand-cyan);font-weight:600;}
+  .sug-stack{display:flex;flex-direction:column;gap:8px;}
+  .sug{text-align:left;width:100%;background:#fff;border:1.5px solid var(--brand-cyan);border-radius:var(--r-sm);padding:11px 14px;font:600 13px/18px 'Montserrat';color:var(--brand-navy);cursor:pointer;transition:all .15s ease;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .sug:hover{background:var(--brand-cyan);color:#fff;}
+  .sug .arr{color:var(--brand-cyan);font-size:14px;line-height:1;transition:color .15s ease;}
+  .sug:hover .arr{color:#fff;}
+  .cg-foot{border-top:1px solid var(--border-soft);padding:14px 16px;background:#fff;}
+  .cg-input{position:relative;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff;padding:4px 4px 4px 12px;display:flex;align-items:center;gap:6px;}
+  .cg-input:focus-within{border-color:var(--brand-cyan);}
+  .cg-input input{flex:1;border:0;outline:0;background:transparent;font:500 13px/20px 'Montserrat';color:var(--text);padding:8px 0;}
+  .cg-input input::placeholder{color:var(--faint);}
+  .cg-send{width:32px;height:32px;border-radius:var(--r-xs);border:0;background:var(--brand-navy);color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;}
+  .cg-send:hover{background:var(--brand-cyan);}
+
+  /* Gallery */
+  .gallery-wrap{padding:40px 40px 20px;}
+  .gallery-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;}
+  .gallery-head .caption{color:var(--muted);}
+  .gallery-head a{font:600 13px/18px 'Montserrat';color:var(--brand-cyan);text-decoration:none;}
+  .gallery{
+    display:grid;grid-template-columns:repeat(4, 1fr);grid-template-rows:160px 160px;
+    gap:8px;border-radius:var(--r-md);overflow:hidden;
+  }
+  .g-tile{position:relative;overflow:hidden;background:var(--brand-navy);cursor:pointer;}
+  .g-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease;}
+  .g-tile:hover img{transform:scale(1.04);}
+  .g-tile.big{grid-column:span 2;grid-row:span 2;}
+  .g-tile.video::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(10,20,35,0) 40%,rgba(10,20,35,0.55) 100%);
+  }
+  .g-play{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;
+    pointer-events:none;
+  }
+  .g-play-inner{
+    width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.92);
+    display:flex;align-items:center;justify-content:center;color:var(--brand-navy);
+    box-shadow:0 4px 16px rgba(0,0,0,0.25);
+  }
+  .g-label{
+    position:absolute;left:12px;bottom:10px;z-index:3;
+    font:700 11px/14px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:#fff;
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  .g-more{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(15,52,87,0.55);color:#fff;
+    font:700 14px/18px 'Montserrat';gap:6px;
+  }
+
+  /* Section primitives */
+  .section{padding:64px 40px;}
+  .section.tight{padding:48px 40px;}
+  .caption{font:700 11px/14px 'Montserrat';letter-spacing:0.14em;text-transform:uppercase;color:var(--brand-cyan);}
+  .caption.muted{color:var(--muted);}
+
+  /* Owner voice */
+  .voice{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:20px;text-align:left;}
+  .voice .caption{text-align:center;}
+  .voice p{font:500 19px/32px 'Montserrat';color:var(--text);text-wrap:pretty;}
+  .voice .owners{
+    display:flex;align-items:center;gap:12px;margin-top:8px;
+    font:500 13px/18px 'Montserrat';color:var(--muted);justify-content:center;
+  }
+  .voice .owners img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:var(--sh-card);}
+
+  /* Neighbourhood strip */
+  .nbhd{background:var(--bg);padding:48px 40px;}
+  .nbhd-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;}
+  .nbhd-grid{display:grid;grid-template-columns:repeat(6, 1fr);gap:16px;}
+  .nbhd-item{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:18px 16px;display:flex;flex-direction:column;gap:8px;
+  }
+  .nbhd-icon{width:28px;height:28px;color:var(--brand-cyan);}
+  .nbhd-name{font:600 14px/18px 'Montserrat';color:var(--brand-navy);}
+  .nbhd-time{font:500 12px/16px 'Montserrat';color:var(--muted);}
+
+  /* Held strip */
+  .held{
+    background:var(--brand-teal-soft);padding:24px 40px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .held-left{display:flex;align-items:center;gap:16px;}
+  .held-icon{
+    width:40px;height:40px;border-radius:50%;background:var(--brand-teal);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .held-text{font:500 15px/22px 'Montserrat';color:var(--brand-navy);}
+  .held-text strong{font-weight:700;}
+  .held-text a{color:var(--brand-cyan);text-decoration:none;font-weight:600;margin-left:8px;}
+
+  /* People like you */
+  .plyc{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
+  .plyc .card{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:20px;display:flex;flex-direction:column;gap:10px;
+  }
+  .plyc .avatars{display:flex;align-items:center;gap:-8px;}
+  .plyc .av{
+    width:28px;height:28px;border-radius:50%;background:var(--brand-cyan-soft);
+    border:2px solid #fff;margin-left:-8px;
+    display:inline-flex;align-items:center;justify-content:center;
+    font:700 11px/1 'Montserrat';color:var(--brand-cyan);
+  }
+  .plyc .av:first-child{margin-left:0;}
+  .plyc .who{font:600 14px/20px 'Montserrat';color:var(--brand-navy);}
+  .plyc .why{font:500 13px/20px 'Montserrat';color:var(--muted);text-wrap:pretty;}
+
+  /* Add-ons */
+  .addons-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;}
+  .addons{display:flex;flex-direction:column;gap:12px;max-width:840px;margin:0 auto;}
+  .addon{
+    display:grid;grid-template-columns:auto 1fr auto auto;gap:20px;align-items:center;
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:18px 20px;transition:border-color .15s ease;
+  }
+  .addon:hover{border-color:var(--brand-cyan);}
+  .toggle{
+    width:44px;height:26px;border-radius:999px;background:var(--border);position:relative;cursor:pointer;flex-shrink:0;
+    transition:background .18s ease;
+  }
+  .toggle::after{
+    content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:transform .18s ease;
+  }
+  .toggle.on{background:var(--brand-cyan);}
+  .toggle.on::after{transform:translateX(18px);}
+  .addon-title{font:600 15px/22px 'Montserrat';color:var(--brand-navy);}
+  .addon-why{font:500 13px/20px 'Montserrat';color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;}
+  .addon-why::before{content:"AI";font:700 9px/1 'JetBrains Mono';letter-spacing:0.08em;color:var(--brand-cyan);background:#fff;border:1px solid var(--brand-cyan);padding:3px 5px;border-radius:var(--r-xs);}
+  .addon-price{font:700 15px/22px 'Montserrat';color:var(--brand-navy);white-space:nowrap;}
+  .addon-price.free{color:var(--brand-teal-deep);}
+
+  /* Final CTA */
+  .final{padding:64px 40px 96px;display:flex;flex-direction:column;gap:20px;align-items:center;}
+  .final-row{
+    width:1040px;max-width:100%;display:flex;align-items:center;justify-content:space-between;
+    background:var(--brand-cyan);border-radius:var(--r-md);padding:8px 8px 8px 32px;
+    box-shadow:0 8px 32px rgba(0,136,204,0.25);
+  }
+  .final-price{display:flex;flex-direction:column;color:#fff;gap:2px;}
+  .final-price .lbl{font:600 11px/14px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;opacity:.85;}
+  .final-price .amt{font:700 28px/32px 'Montserrat';letter-spacing:-0.01em;}
+  .final-cta{
+    padding:18px 32px;background:#fff;color:var(--brand-cyan);border:0;border-radius:var(--r-sm);
+    font:700 16px/22px 'Montserrat';cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;
+  }
+  .final-cta:hover{background:var(--brand-cyan-soft);}
+  .final-note{font:500 13px/18px 'Montserrat';color:var(--muted);}
+
+  /* Footer */
+  .footer{
+    height:80px;padding:24px 40px;background:var(--brand-navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .footer .copy{font:500 14px/20px 'Montserrat';color:rgba(255,255,255,0.7);}
+  .footer .wordmark-f{font:700 14px/20px 'Montserrat';color:#fff;}
+  .footer .legal{display:flex;gap:20px;}
+  .footer .legal a{color:rgba(255,255,255,0.7);text-decoration:none;font:500 14px/20px 'Montserrat';}
+  .footer .legal .sep{color:rgba(255,255,255,0.3);}
+
+  .row{display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="Paraty Property">
+
+  <header class="header">
+    <a href="Paraty Homepage.html" class="wordmark">paraty<sup>ai</sup></a>
+    <nav class="nav-right">
+      <a class="nav-link" href="#">Journal</a>
+      <a class="nav-link" href="#">Log in</a>
+      <span class="icon-btn" aria-label="Saved"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></span>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=2400&q=80&auto=format&fit=crop" alt="Hotel Kent courtyard at golden hour"/>
+    <div class="hero-copy">
+      <div class="hero-eyebrow"><span class="pulse"></span>Paraty Direct · family-run</div>
+      <h1 class="hero-title">Hotel Kent</h1>
+      <div class="hero-sub">Málaga <span class="dot">·</span> Casco Histórico <span class="dot">·</span> family-run since 1954</div>
+    </div>
+  </section>
+
+  <!-- STICKY RESERVE BAR -->
+  <div class="reserve-bar">
+    <div class="rb-left">
+      <div class="rb-name">Hotel Kent</div>
+      <div class="rb-meta">Málaga · Casco Histórico</div>
+    </div>
+    <div class="rb-right">
+      <div class="rb-dates">Jul 14–17 <span class="sep">·</span> 2 adults + 1 child <span class="sep">·</span> <span class="price">€585 direct</span></div>
+      <a href="Paraty Checkout.html" class="rb-cta">Reserve
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <!-- ============ AI CONCIERGE (LEFT) ============ -->
+    <aside class="concierge" aria-label="Paraty Assistant">
+      <div class="cg-head">
+        <div class="cg-avatar">AI</div>
+        <div class="cg-who">
+          <div class="cg-name">Paraty Assistant</div>
+          <div class="cg-status"><span class="pulse"></span>Ask me about Hotel Kent</div>
+        </div>
+      </div>
+
+      <div class="cg-scroll">
+        <div class="bubble">
+          You're looking at <strong>Hotel Kent</strong> — I've stayed on top of this one for a while. It's the García family's place, 42 rooms, <em>casco histórico</em>, and honestly a solid pick for your dates.
+        </div>
+
+        <div class="bubble">
+          A few things I'd check before you book. Want me to answer any of these?
+        </div>
+
+        <div class="sug-stack">
+          <button class="sug">Is the pool good for a 4-year-old? <span class="arr">→</span></button>
+          <button class="sug">How noisy are the rooms at night? <span class="arr">→</span></button>
+          <button class="sug">Can we get connecting rooms? <span class="arr">→</span></button>
+          <button class="sug">What's breakfast like for kids? <span class="arr">→</span></button>
+        </div>
+
+        <div class="bubble">
+          Also — I noticed your flight lands at <strong>23:10 Sunday</strong>. Málaga's airport taxi rank closes at midnight on Sundays, so if you're not pre-booking a transfer, you'll want to know that now rather than at 11:45pm with a sleepy child. The hotel can arrange one directly for <em>€42</em>.
+        </div>
+
+        <div class="sug-stack">
+          <button class="sug">Book the transfer <span class="arr">→</span></button>
+          <button class="sug">What about a rental car instead? <span class="arr">→</span></button>
+        </div>
+
+        <div class="bubble">
+          One more thing worth knowing: the García family does a little <em>welcome wine &amp; cheese</em> on the first evening — it's optional and costs €15, but Ana (one of the owners) pours it herself and it's a nice way to get the local gossip on where to eat. I'd do it.
+        </div>
+
+        <div class="bubble">
+          Want me to dig into anything else? Reviews from families with kids, neighbourhood safety at night, best rooms to request — just ask.
+        </div>
+
+        <div class="sug-stack">
+          <button class="sug">Show reviews from families <span class="arr">→</span></button>
+          <button class="sug">Which room should we request? <span class="arr">→</span></button>
+          <button class="sug">Is the neighbourhood safe at night? <span class="arr">→</span></button>
+        </div>
+      </div>
+
+      <div class="cg-foot">
+        <div class="cg-input">
+          <input type="text" placeholder="Ask anything about Hotel Kent…" aria-label="Ask the assistant"/>
+          <button class="cg-send" aria-label="Send">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-col">
+
+    <!-- GALLERY -->
+    <section class="gallery-wrap">
+      <div class="gallery-head">
+        <div class="caption muted">Gallery · 24 photos &amp; 1 video</div>
+        <a href="#">See all →</a>
+      </div>
+      <div class="gallery">
+        <div class="g-tile big video">
+          <img src="https://images.unsplash.com/photo-1540541338287-41700207dee6?w=1200&q=80&auto=format&fit=crop" alt="Hotel Kent tour video"/>
+          <div class="g-play"><div class="g-play-inner">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </div></div>
+          <span class="g-label">Video tour · 1:42</span>
+        </div>
+        <div class="g-tile">
+          <img src="https://images.unsplash.com/photo-1551776235-dde6d482980b?w=600&q=80&auto=format&fit=crop" alt="Family room"/>
+          <span class="g-label">Family room</span>
+        </div>
+        <div class="g-tile">
+          <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=600&q=80&auto=format&fit=crop" alt="Pool courtyard"/>
+          <span class="g-label">Pool</span>
+        </div>
+        <div class="g-tile">
+          <img src="https://images.unsplash.com/photo-1595576508898-0ad5c879a061?w=600&q=80&auto=format&fit=crop" alt="Breakfast terrace"/>
+          <span class="g-label">Breakfast</span>
+        </div>
+        <div class="g-tile">
+          <img src="https://images.unsplash.com/photo-1505692433770-36f19f51681d?w=600&q=80&auto=format&fit=crop" alt="Rooftop at sunset"/>
+          <div class="g-more">+ 20 photos
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OWNER VOICE -->
+  <section class="section">
+    <div class="voice">
+      <div class="caption">From the owners</div>
+      <p>We're the García family. The Kent has been in our family since 1954 — three generations of running a small place in the heart of Málaga.</p>
+      <p>The pool's shaded after 3pm, breakfast is always on, and our staff will tell you which bars to avoid. 42 rooms, 42 keys to something our city does well.</p>
+      <div class="owners">
+        <img src="https://images.unsplash.com/photo-1542080681-b52d382432af?w=200&q=80&auto=format&fit=crop" alt=""/>
+        Ana, Carlos &amp; María García — third-generation hoteliers
+      </div>
+    </div>
+  </section>
+
+  <!-- NEIGHBOURHOOD -->
+  <section class="nbhd">
+    <div class="nbhd-head">
+      <div class="caption muted">What you can walk to in 10 min</div>
+      <a href="#" style="font:600 13px/18px 'Montserrat';color:var(--brand-cyan);text-decoration:none;">See map →</a>
+    </div>
+    <div class="nbhd-grid">
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16M6 4v3a6 6 0 0 0 12 0V4M12 13v7M8 20h8"/></svg>
+        <div class="nbhd-name">Plaza de la Merced</div>
+        <div class="nbhd-time">4 min walk</div>
+      </div>
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-7h6v7"/></svg>
+        <div class="nbhd-name">Alcazaba</div>
+        <div class="nbhd-time">8 min walk</div>
+      </div>
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+        <div class="nbhd-name">Centre Pompidou</div>
+        <div class="nbhd-time">6 min walk</div>
+      </div>
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v7a5 5 0 0 0 10 0V2M12 9v13"/></svg>
+        <div class="nbhd-name">Mercado Atarazanas</div>
+        <div class="nbhd-time">9 min walk</div>
+      </div>
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c2-1 4-1 6 0s4 1 6 0 4-1 6 0"/><path d="M12 3v11M12 3l4 4M12 3l-4 4"/></svg>
+        <div class="nbhd-name">Port</div>
+        <div class="nbhd-time">10 min walk</div>
+      </div>
+      <div class="nbhd-item">
+        <svg class="nbhd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M4 15h16M8 15v-3M16 15v-3"/></svg>
+        <div class="nbhd-name">Playa Malagueta</div>
+        <div class="nbhd-time">14 min walk</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HELD -->
+  <section class="held">
+    <div class="held-left">
+      <div class="held-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="held-text">
+        Your <strong>3 nights are held</strong> — Jul 14–17, family room, 2 adults + 1 child. Confirm to reserve.
+        <a href="#">Change dates</a>
+      </div>
+    </div>
+    <div style="font:500 13px/18px 'Montserrat';color:var(--muted);">Held for 23 min</div>
+  </section>
+
+  <!-- PEOPLE LIKE YOU -->
+  <section class="section tight">
+    <div style="max-width:1040px;margin:0 auto;">
+      <div class="caption muted">People like you chose</div>
+      <div class="plyc">
+        <div class="card">
+          <div class="avatars"><span class="av">M</span><span class="av">J</span><span class="av">L</span></div>
+          <div class="who">Family from Madrid</div>
+          <div class="why">Chose Hotel Kent — July 2025 · pool priority, kids 6 &amp; 9</div>
+        </div>
+        <div class="card">
+          <div class="avatars"><span class="av">A</span><span class="av">T</span></div>
+          <div class="who">Couple from Lisbon</div>
+          <div class="why">Chose Hotel Kent — June 2025 · walking-distance to Alcazaba, quiet rooms</div>
+        </div>
+        <div class="card">
+          <div class="avatars"><span class="av">R</span><span class="av">N</span><span class="av">B</span><span class="av">C</span></div>
+          <div class="who">Family from Paris</div>
+          <div class="why">Chose Hotel Kent — Aug 2025 · connecting rooms, breakfast until 11</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADDONS -->
+  <section class="section tight" style="background:var(--bg);">
+    <div style="max-width:840px;margin:0 auto;">
+      <div class="addons-head">
+        <div class="caption">AI-recommended add-ons</div>
+        <div style="font:500 13px/18px 'Montserrat';color:var(--muted);">3 suggestions · based on your stay</div>
+      </div>
+      <div class="addons">
+        <div class="addon">
+          <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          <div>
+            <div class="addon-title">Airport transfer from AGP</div>
+            <div class="addon-why">Your flight arrives 23:10 — taxi rank closes at midnight on Sundays</div>
+          </div>
+          <div class="addon-price">+ €42</div>
+        </div>
+        <div class="addon">
+          <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          <div>
+            <div class="addon-title">Welcome local wine (Moscatel)</div>
+            <div class="addon-why">From a bodega 30 min inland — pairs with the García family cheese plate</div>
+          </div>
+          <div class="addon-price">+ €15</div>
+        </div>
+        <div class="addon">
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          <div>
+            <div class="addon-title">Kids amenities pack</div>
+            <div class="addon-why">Pool inflatables, colouring set, sun hat — included for under-12s</div>
+          </div>
+          <div class="addon-price free">Free</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final">
+    <div class="final-row">
+      <div class="final-price">
+        <div class="lbl">Total · 3 nights · 2 adults + 1 child</div>
+        <div class="amt">€585</div>
+      </div>
+      <a href="Paraty Checkout.html" class="final-cta">Complete reservation
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="final-note">Secure · cancel free until Jul 12 · price held for 23 min</div>
+  </section>
+
+    </div> <!-- /main-col -->
+  </div> <!-- /shell -->
+
+  <footer class="footer">
+    <div class="row" style="gap:16px;">
+      <span class="wordmark-f" style="color:#fff;">paraty</span>
+      <span class="copy">© 2026 · Built for independent hoteliers</span>
+    </div>
+    <div class="legal">
+      <a href="#">Privacy</a><span class="sep">·</span>
+      <a href="#">Terms</a><span class="sep">·</span>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+</div>
+<script>
+  function scrollConciergeToBottom(){
+    const scroll = document.querySelector('.cg-scroll');
+    if (scroll) scroll.scrollTop = scroll.scrollHeight;
+  }
+  window.addEventListener('load', () => requestAnimationFrame(scrollConciergeToBottom));
+  document.addEventListener('DOMContentLoaded', scrollConciergeToBottom);
+</script>
+</body>
+</html>

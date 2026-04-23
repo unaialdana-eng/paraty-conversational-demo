@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Paraty — Tell us what this trip should feel like</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Brand */
+    --brand-cyan:#0088CC;
+    --brand-cyan-hover:#0099E6;
+    --brand-navy:#0F3457;
+    --brand-teal:#00A896;
+    /* Neutrals */
+    --white:#FFFFFF;
+    --bg:#F7F9FB;
+    --border:#DFE3E8;
+    --text:#1F2937;
+    --muted:#6B7280;
+    /* Radii */
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-pill:999px;
+    /* Shadows */
+    --sh-card:0 1px 3px rgba(15,52,87,0.06);
+    --sh-elev:0 8px 24px rgba(15,52,87,0.12);
+    --sh-elev-hover:0 16px 40px rgba(15,52,87,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;}
+  body{
+    font-family:'Montserrat',system-ui,sans-serif;
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    display:flex;justify-content:center;
+  }
+  .page{
+    width:1440px;
+    background:var(--white);
+    overflow:hidden;
+  }
+
+  /* ========== Type styles ========== */
+  .t-h1{font:700 48px/56px 'Montserrat';letter-spacing:-0.02em;color:var(--brand-navy);}
+  .t-h2{font:600 24px/32px 'Montserrat';letter-spacing:-0.01em;color:var(--brand-navy);}
+  .t-body-lg{font:500 18px/28px 'Montserrat';color:var(--text);}
+  .t-body-md{font:500 16px/24px 'Montserrat';color:var(--text);}
+  .t-body-sm{font:500 14px/20px 'Montserrat';color:var(--muted);}
+  .t-caption{font:600 12px/16px 'Montserrat';letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+
+  /* ========== Header ========== */
+  .header{
+    height:72px;
+    padding:24px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    background:var(--white);
+    border-bottom:1px solid var(--border);
+  }
+  .wordmark{
+    font:700 20px/1 'Montserrat';
+    color:var(--brand-cyan);
+    letter-spacing:-0.01em;
+  }
+  .wordmark sup{
+    font:500 10px/1 'JetBrains Mono';
+    color:var(--brand-teal);
+    margin-left:4px;
+    letter-spacing:0.04em;
+    vertical-align:top;
+  }
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .nav-link{
+    font:500 14px/20px 'Montserrat';
+    color:var(--brand-navy);
+    text-decoration:none;
+    cursor:pointer;
+  }
+  .nav-link:hover{color:var(--brand-cyan)}
+  .icon-btn{
+    width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
+    color:var(--brand-navy);cursor:pointer;position:relative;
+  }
+  .icon-btn .dot{
+    position:absolute;top:-2px;right:-3px;
+    width:8px;height:8px;border-radius:50%;
+    background:var(--brand-teal);
+    border:2px solid var(--white);
+  }
+
+  /* ========== Hero ========== */
+  .hero{
+    position:relative;
+    height:600px;
+    overflow:hidden;
+    background:var(--brand-navy);
+  }
+  .hero-photo{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=2400&q=80&auto=format&fit=crop');
+    background-size:cover;
+    background-position:center 55%;
+  }
+  .hero-photo::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,20,35,0.30) 0%, rgba(10,20,35,0.15) 35%, rgba(10,20,35,0.55) 100%);
+  }
+  .hero-gradient{
+    position:absolute;left:0;right:0;bottom:0;height:45%;
+    background:linear-gradient(180deg, rgba(10,20,35,0) 0%, rgba(10,20,35,0.45) 100%);
+  }
+
+  .hero-overlay{
+    position:relative;
+    height:100%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:24px;
+    padding:0 40px;
+  }
+  .hero-eyebrow{
+    font:600 12px/16px 'Montserrat';
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,0.82);
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero-eyebrow .pulse{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--brand-teal);
+    box-shadow:0 0 0 4px rgba(0,168,150,0.25);
+  }
+  .hero-headline{
+    font:700 44px/52px 'Montserrat';
+    letter-spacing:-0.02em;
+    color:#fff;
+    text-align:center;
+    max-width:760px;
+    text-wrap:balance;
+  }
+  .hero-sub{
+    font:500 16px/24px 'Montserrat';
+    color:rgba(255,255,255,0.88);
+    text-align:center;
+    max-width:560px;
+    margin-top:-8px;
+  }
+
+  /* ========== Unified search shell (classic primary + AI integrated) ========== */
+  .search-shell{
+    width:960px;
+    background:#fff;
+    border-radius:var(--r-lg);
+    box-shadow:var(--sh-elev);
+    overflow:hidden;
+    margin-top:8px;
+  }
+  /* Classic search — primary row */
+  .classic{
+    padding:10px;
+    display:grid;
+    grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,0.9fr) auto;
+    align-items:stretch;
+    gap:0;
+  }
+  .cs-field{
+    padding:12px 18px;
+    display:flex;flex-direction:column;justify-content:center;gap:3px;
+    border-right:1px solid var(--border);
+    cursor:pointer;
+    border-radius:var(--r-md);
+    transition:background .15s ease;
+    min-width:0;
+  }
+  .cs-field:hover{background:#F2F6FA;}
+  .cs-field:last-of-type{border-right:0;}
+  .cs-label{
+    font:600 10px/14px 'Montserrat';
+    letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .cs-value{
+    font:600 15px/22px 'Montserrat';
+    color:var(--brand-navy);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    display:flex;align-items:center;gap:8px;
+  }
+  .cs-value.placeholder{color:var(--muted);font-weight:500;}
+  .cs-find{
+    margin-left:6px;
+    padding:0 28px;
+    background:var(--brand-cyan);
+    color:#fff;border:0;cursor:pointer;
+    border-radius:var(--r-md);
+    font:600 14px/20px 'Montserrat';
+    display:inline-flex;align-items:center;gap:10px;
+    transition:background .15s ease;
+    letter-spacing:-0.005em;
+  }
+  .cs-find:hover{background:var(--brand-cyan-hover);}
+
+  /* AI assist strip — integrated, subtle, complementary */
+  .ai-assist{
+    display:flex;align-items:center;gap:14px;
+    padding:12px 20px;
+    background:linear-gradient(90deg, rgba(0,136,204,0.06) 0%, rgba(0,168,150,0.05) 100%);
+    border-top:1px solid var(--border);
+    cursor:text;
+  }
+  .ai-assist .ai-icon{
+    flex:0 0 28px;width:28px;height:28px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--brand-cyan), var(--brand-teal));
+    color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .ai-assist .ai-label{
+    font:600 10px/14px 'Montserrat';
+    letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--brand-navy);
+    white-space:nowrap;
+  }
+  .ai-assist input{
+    flex:1;border:0;outline:0;background:transparent;
+    font:400 italic 14px/20px 'Montserrat';
+    color:var(--text);
+    min-width:0;
+  }
+  .ai-assist input::placeholder{color:var(--muted);font-style:italic;}
+  .ai-chips{display:flex;gap:6px;flex-shrink:0;}
+  .ai-chip{
+    padding:6px 12px;
+    border-radius:var(--r-pill);
+    background:#fff;
+    border:1px solid var(--border);
+    font:600 12px/16px 'Montserrat';
+    color:var(--brand-navy);
+    cursor:pointer;
+    transition:all .15s ease;
+    white-space:nowrap;
+  }
+  .ai-chip:hover{
+    background:var(--brand-cyan);color:#fff;border-color:var(--brand-cyan);
+  }
+  .ai-send{
+    flex:0 0 28px;width:28px;height:28px;border-radius:50%;
+    background:var(--brand-navy);color:#fff;border:0;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;
+    transition:background .15s ease;
+  }
+  .ai-send:hover{background:var(--brand-cyan);}
+
+  /* ========== Secondary surface ========== */
+  .surface{
+    background:var(--white);
+    padding:96px 64px 120px;
+  }
+  .surface-inner{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:48px;
+  }
+  .column{display:flex;flex-direction:column;gap:20px;}
+  .col-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    padding-bottom:16px;
+    border-bottom:1px solid var(--border);
+  }
+  .col-head .see{
+    font:500 13px/20px 'Montserrat';
+    color:var(--brand-cyan);text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .col-head .see:hover{color:var(--brand-cyan-hover)}
+  .card-scroll{
+    display:flex;gap:16px;
+    overflow-x:auto;
+    padding-bottom:12px;
+    scroll-snap-type:x mandatory;
+    margin:0 -4px;padding-left:4px;padding-right:4px;
+  }
+  .card-scroll::-webkit-scrollbar{height:6px}
+  .card-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:var(--r-pill)}
+  .card{
+    flex:0 0 320px;
+    height:auto;
+    border-radius:var(--r-md);
+    background:var(--white);
+    box-shadow:var(--sh-card);
+    overflow:hidden;
+    scroll-snap-align:start;
+    display:flex;flex-direction:column;
+    transition:transform .2s ease, box-shadow .2s ease;
+    cursor:pointer;
+    border:1px solid var(--border);
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--sh-elev);}
+  .card-photo{
+    height:180px;position:relative;overflow:hidden;
+  }
+  .card-photo::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(15,52,87,0) 40%, rgba(15,52,87,0.25) 100%);
+  }
+  .card-photo .tag-pill{
+    position:absolute;left:12px;top:12px;
+    font:600 10px/1 'Montserrat';
+    color:var(--brand-navy);
+    background:rgba(255,255,255,0.95);
+    padding:6px 10px;
+    border-radius:var(--r-pill);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .card-body{padding:16px;display:flex;flex-direction:column;gap:6px;}
+  .card-name{font:700 16px/22px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.01em;}
+  .card-desc{font:500 13px/18px 'Montserrat';color:var(--muted);text-wrap:pretty;}
+  .card-meta{
+    display:flex;align-items:center;gap:8px;margin-top:8px;
+    font:500 12px/16px 'Montserrat';color:var(--muted);
+  }
+  .card-meta .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--border);}
+
+  /* photo variants — real photography */
+  .card-photo{background-size:cover;background-position:center;}
+  .ph-a{background-image:url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80&auto=format&fit=crop');} /* coastal */
+  .ph-b{background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop');} /* mountain */
+  .ph-c{background-image:url('https://images.unsplash.com/photo-1505692433770-36f19f51681d?w=800&q=80&auto=format&fit=crop');} /* rural */
+  .ph-d{background-image:url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80&auto=format&fit=crop');} /* harbour */
+  .ph-e{background-image:url('https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800&q=80&auto=format&fit=crop');} /* alentejo pool */
+  .ph-f{background-image:url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80&auto=format&fit=crop');} /* garden */
+  .ph-g{background-image:url('https://images.unsplash.com/photo-1507434965515-61970f2bd7c6?w=800&q=80&auto=format&fit=crop');} /* vineyard */
+  .ph-h{background-image:url('https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&auto=format&fit=crop');} /* dune */
+  .ph-i{background-image:url('https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80&auto=format&fit=crop');} /* essay */
+  .ph-j{background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80&auto=format&fit=crop');} /* field notes */
+  .ph-k{background-image:url('https://images.unsplash.com/photo-1521783988139-89397d761dce?w=800&q=80&auto=format&fit=crop');} /* interview */
+  .ph-l{background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&auto=format&fit=crop');} /* guide */
+
+  /* ========== Footer ========== */
+  .footer{
+    height:80px;
+    padding:24px 40px;
+    background:var(--brand-navy);
+    color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .footer .copy{font:500 14px/20px 'Montserrat';color:rgba(255,255,255,0.7);}
+  .footer .wordmark-f{font:700 14px/20px 'Montserrat';color:#fff;letter-spacing:-0.01em;}
+  .footer .legal{display:flex;gap:20px;}
+  .footer .legal a{color:rgba(255,255,255,0.7);text-decoration:none;font:500 14px/20px 'Montserrat';}
+  .footer .legal a:hover{color:#fff;}
+  .footer .legal .sep{color:rgba(255,255,255,0.3);}
+
+  /* ========== Utility ========== */
+  .row{display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="Paraty Homepage">
+
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <a class="wordmark" href="/" style="text-decoration:none;">paraty<sup>ai</sup></a>
+    <nav class="nav-right">
+      <a class="nav-link" href="/">About the demo</a>
+      <a class="nav-link" href="#">Hosts</a>
+      <a class="nav-link" href="#">Journal</a>
+      <a class="nav-link" href="#">Log in</a>
+      <span class="icon-btn" aria-label="Saved trips">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>
+        </svg>
+        <span class="dot"></span>
+      </span>
+    </nav>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-photo" role="img" aria-label="Mediterranean coastal hotel at golden hour"></div>
+    <div class="hero-gradient"></div>
+
+    <div class="hero-overlay">
+      <div class="hero-eyebrow"><span class="pulse"></span>Direct from the hosts · no middlemen</div>
+
+      <h1 class="hero-headline">Find a place that fits the trip you have in mind.</h1>
+      <p class="hero-sub">Search by dates — or, if you'd rather describe the trip, the AI concierge is right below.</p>
+
+      <!-- Unified search shell: classic primary, AI integrated -->
+      <form class="search-shell" role="search" action="/search" method="POST" id="search-form">
+        <!-- Primary: classic fielded search -->
+        <div class="classic">
+          <div class="cs-field" tabindex="0">
+            <div class="cs-label">Where</div>
+            <div class="cs-value placeholder">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Any destination
+            </div>
+          </div>
+          <div class="cs-field" tabindex="0">
+            <div class="cs-label">Check in</div>
+            <div class="cs-value">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+              Fri, May 8
+            </div>
+          </div>
+          <div class="cs-field" tabindex="0">
+            <div class="cs-label">Check out</div>
+            <div class="cs-value">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+              Sun, May 10
+            </div>
+          </div>
+          <div class="cs-field" tabindex="0">
+            <div class="cs-label">Guests</div>
+            <div class="cs-value">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              2 adults
+            </div>
+          </div>
+          <input type="hidden" name="where" value="Málaga, Spain"/>
+          <input type="hidden" name="check_in" value="Jul 14"/>
+          <input type="hidden" name="check_out" value="Jul 17"/>
+          <input type="hidden" name="guests" value="2 adults + 1 child"/>
+          <button class="cs-find" type="submit">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Find hotels
+          </button>
+        </div>
+
+        <!-- Complementary: AI assist, integrated within the same shell -->
+        <label class="ai-assist" for="ai-intent">
+          <span class="ai-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+          </span>
+          <span class="ai-label">AI concierge</span>
+          <input
+            id="ai-intent"
+            name="q"
+            type="text"
+            value="Family in Málaga, 3 nights July, 2 adults + 1 child, pool, under €220"
+            placeholder="Describe the trip — e.g. 'weekend Palma, couple, harbour view'"
+            aria-label="Describe your trip"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();document.getElementById('search-form').submit();}"
+          />
+          <div class="ai-chips">
+            <button class="ai-chip" type="button" onclick="fillOnly('Weekend in Palma, 2 nights, boutique harbour view, couple, under €260')">Weekend escape</button>
+            <button class="ai-chip" type="button" onclick="fillOnly('Family in Málaga, 3 nights July, 2 adults + 1 child, pool, under €220')">Family, July</button>
+            <button class="ai-chip" type="button" onclick="fillOnly('Luna de miel 4 noches Santorini, piscina infinity y vista caldera')">Honeymoon</button>
+          </div>
+          <button class="ai-send" type="submit" aria-label="Ask concierge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </label>
+      </form>
+      <script>
+        // Populate the AI input but do NOT submit — the user confirms with Enter or the send button.
+        function fillOnly(q){
+          const input = document.getElementById('ai-intent');
+          input.value = q;
+          input.focus();
+          input.setSelectionRange(0, 0);
+          input.scrollLeft = 0;
+        }
+        // On load, make sure the pre-populated value renders from the start, not scrolled to the end.
+        document.addEventListener('DOMContentLoaded', function(){
+          const input = document.getElementById('ai-intent');
+          if (!input) return;
+          input.setSelectionRange(0, 0);
+          input.scrollLeft = 0;
+        });
+      </script>
+    </div>
+  </section>
+
+  <!-- ================= SURFACE ================= -->
+  <section class="surface">
+    <div class="surface-inner">
+
+      <!-- Column 1 -->
+      <div class="column">
+        <div class="col-head">
+          <h2 class="t-h2">Featured this week</h2>
+          <a class="see" href="#">See all <span>→</span></a>
+        </div>
+        <div class="card-scroll">
+          <article class="card">
+            <div class="card-photo ph-a">
+              <span class="tag-pill">Coastal</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Casa Aldaba</div>
+              <div class="card-desc">A twelve-room hideaway tucked behind a citrus grove in Mallorca's quiet south.</div>
+              <div class="card-meta">Mallorca, ES <span class="dot-sep"></span> Host-owned since 1998</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-b">
+              <span class="tag-pill">Mountain</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Refugio del Pino</div>
+              <div class="card-desc">Slow mornings, thick stone walls, and a cedar sauna facing the Pyrenees.</div>
+              <div class="card-meta">Ordesa, ES <span class="dot-sep"></span> 18 rooms</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-c">
+              <span class="tag-pill">Rural</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Masía Noguera</div>
+              <div class="card-desc">A farmhouse inn among olive terraces, run by three sisters and a very old dog.</div>
+              <div class="card-meta">Empordà, ES <span class="dot-sep"></span> Family-run</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-d">
+              <span class="tag-pill">Harbour</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Hotel Marea</div>
+              <div class="card-desc">Whitewashed rooms above a working fishing harbour — wake to nets and gulls.</div>
+              <div class="card-meta">Cadaqués, ES <span class="dot-sep"></span> 22 rooms</div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Column 2 -->
+      <div class="column">
+        <div class="col-head">
+          <h2 class="t-h2">Direct-only offers</h2>
+          <a class="see" href="#">See all <span>→</span></a>
+        </div>
+        <div class="card-scroll">
+          <article class="card">
+            <div class="card-photo ph-e">
+              <span class="tag-pill">4th night free</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Herdade do Vale</div>
+              <div class="card-desc">Cork oaks, long table dinners, and a pool the colour of rainwater.</div>
+              <div class="card-meta">Alentejo, PT <span class="dot-sep"></span> Direct guests only</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-f">
+              <span class="tag-pill">Late check-out</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">La Granja</div>
+              <div class="card-desc">A members' farm by day, a fourteen-bed hotel by night — booked direct, free breakfast.</div>
+              <div class="card-meta">Ibiza, ES <span class="dot-sep"></span> Adults only</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-g">
+              <span class="tag-pill">Spa credit</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Quinta da Lua</div>
+              <div class="card-desc">A vineyard hotel on the Douro — bookers direct receive a €60 cellar credit.</div>
+              <div class="card-meta">Pinhão, PT <span class="dot-sep"></span> 9 suites</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-h">
+              <span class="tag-pill">3 for 2</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Hotel Duna</div>
+              <div class="card-desc">A surf-coast lodge with heated floors, bike shed, and a tiny cinema room.</div>
+              <div class="card-meta">San Sebastián, ES <span class="dot-sep"></span> 16 rooms</div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Column 3 -->
+      <div class="column">
+        <div class="col-head">
+          <h2 class="t-h2">From our journal</h2>
+          <a class="see" href="#">Read all <span>→</span></a>
+        </div>
+        <div class="card-scroll">
+          <article class="card">
+            <div class="card-photo ph-i">
+              <span class="tag-pill">Essay</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">On the vanishing small hotel</div>
+              <div class="card-desc">Why twelve-room hoteliers are quietly reshaping how Europe travels.</div>
+              <div class="card-meta">6 min read <span class="dot-sep"></span> April</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-j">
+              <span class="tag-pill">Field notes</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">Three nights on the Costa Brava</div>
+              <div class="card-desc">An itinerary for the off-season, written by a local baker.</div>
+              <div class="card-meta">4 min read <span class="dot-sep"></span> April</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-k">
+              <span class="tag-pill">Interview</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">The innkeeper at Masía Noguera</div>
+              <div class="card-desc">Ana Puig on olive harvests, direct bookings, and the art of keeping things small.</div>
+              <div class="card-meta">8 min read <span class="dot-sep"></span> March</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-photo ph-l">
+              <span class="tag-pill">Guide</span>
+            </div>
+            <div class="card-body">
+              <div class="card-name">A slow guide to Ordesa</div>
+              <div class="card-desc">Where to eat, which refugio to book, and the one trail worth the early start.</div>
+              <div class="card-meta">10 min read <span class="dot-sep"></span> March</div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
+    <div class="row" style="gap:16px;">
+      <span class="wordmark-f">paraty</span>
+      <span class="copy">© 2026 · Built for independent hoteliers</span>
+    </div>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <span class="sep">·</span>
+      <a href="#">Terms</a>
+      <span class="sep">·</span>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

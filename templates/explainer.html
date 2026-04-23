@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Paraty — About this demo</title>
+<meta name="viewport" content="width=1440" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-cyan:#0088CC;
+    --brand-cyan-hover:#0099E6;
+    --brand-cyan-soft:#F0F7FC;
+    --brand-navy:#0F3457;
+    --brand-teal:#00A896;
+    --brand-teal-soft:#E6FBF7;
+    --brand-teal-deep:#007A6B;
+    --white:#FFFFFF;
+    --bg:#F7F9FB;
+    --border:#DFE3E8;
+    --border-soft:#EEF0F3;
+    --text:#1F2937;
+    --muted:#6B7280;
+    --faint:#9CA3AF;
+    --r-xs:4px; --r-sm:6px; --r-md:8px; --r-lg:12px; --r-pill:999px;
+    --sh-card:0 1px 3px rgba(15,52,87,0.06);
+    --sh-elev:0 8px 24px rgba(15,52,87,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#1a1a1a;}
+  body{font-family:'Montserrat',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;}
+  .page{width:1440px;background:var(--white);}
+
+  .header{
+    height:72px;padding:24px 40px;background:var(--white);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .wordmark{font:700 20px/1 'Montserrat';color:var(--brand-cyan);letter-spacing:-0.01em;text-decoration:none;}
+  .wordmark sup{font:500 10px/1 'JetBrains Mono';color:var(--brand-teal);margin-left:4px;letter-spacing:0.04em;vertical-align:top;}
+  .nav-right{display:flex;align-items:center;gap:24px}
+  .nav-link{font:500 14px/20px 'Montserrat';color:var(--brand-navy);text-decoration:none;cursor:pointer;}
+  .nav-link.cta{
+    background:var(--brand-cyan);color:#fff;padding:10px 20px;border-radius:var(--r-sm);
+    font:600 13px/18px 'Montserrat';letter-spacing:-0.01em;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .nav-link.cta:hover{background:var(--brand-cyan-hover);}
+
+  /* Hero */
+  .hero{padding:80px 80px 48px;border-bottom:1px solid var(--border-soft);}
+  .hero-inner{max-width:920px;display:flex;flex-direction:column;gap:20px;}
+  .eyebrow{
+    font:700 11px/14px 'Montserrat';letter-spacing:0.16em;text-transform:uppercase;
+    color:var(--brand-cyan);
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--brand-teal);box-shadow:0 0 0 4px rgba(0,168,150,0.18);}
+  h1.title{
+    font:800 54px/64px 'Montserrat';letter-spacing:-0.025em;color:var(--brand-navy);
+    text-wrap:balance;
+  }
+  p.lead{
+    font:500 18px/30px 'Montserrat';color:var(--text);
+    max-width:780px;text-wrap:pretty;
+  }
+  .mode-chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 14px;border-radius:var(--r-pill);
+    background:var(--brand-teal-soft);color:var(--brand-teal-deep);
+    font:700 12px/16px 'Montserrat';letter-spacing:0.04em;
+    margin-top:8px;width:max-content;
+  }
+  .mode-chip.mock{background:#FFF4E5;color:#8A5A00;}
+  .mode-chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;}
+
+  /* Section */
+  .section{padding:72px 80px;border-bottom:1px solid var(--border-soft);}
+  .section.alt{background:var(--bg);}
+  .section-head{
+    display:flex;align-items:baseline;gap:16px;margin-bottom:32px;
+  }
+  .section-head .num{
+    font:700 13px/1 'JetBrains Mono';color:var(--brand-cyan);letter-spacing:0.06em;
+  }
+  .section-head h2{
+    font:700 32px/40px 'Montserrat';letter-spacing:-0.015em;color:var(--brand-navy);
+  }
+
+  /* Three-column cards (purpose, pages, restrictions) */
+  .col-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .col{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:28px;display:flex;flex-direction:column;gap:12px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .col:hover{border-color:var(--brand-cyan);box-shadow:var(--sh-card);}
+  .col .caption{
+    font:700 11px/14px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;color:var(--brand-cyan);
+  }
+  .col h3{
+    font:700 18px/26px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.01em;
+  }
+  .col p{font:500 14px/22px 'Montserrat';color:var(--text);text-wrap:pretty;}
+  .col .meta{font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:auto;}
+
+  /* Pages row (horizontal) */
+  .pages{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .page-card{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:22px;display:flex;flex-direction:column;gap:10px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+    text-decoration:none;color:inherit;
+  }
+  .page-card:hover{border-color:var(--brand-cyan);box-shadow:var(--sh-card);}
+  .page-card .step{font:700 11px/14px 'JetBrains Mono';color:var(--brand-cyan);letter-spacing:0.08em;}
+  .page-card h4{font:700 16px/22px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.01em;}
+  .page-card p{font:500 13px/20px 'Montserrat';color:var(--muted);text-wrap:pretty;}
+  .page-card .arrow{
+    margin-top:6px;font:600 13px/18px 'Montserrat';color:var(--brand-cyan);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+
+  /* Restrictions list */
+  .restrict-list{display:flex;flex-direction:column;gap:14px;max-width:920px;}
+  .restrict-item{
+    display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:flex-start;
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:18px 22px;
+  }
+  .restrict-item .icon{
+    width:32px;height:32px;border-radius:var(--r-xs);
+    background:var(--brand-cyan-soft);color:var(--brand-cyan);
+    display:inline-flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .restrict-item .body .h{font:700 14px/20px 'Montserrat';color:var(--brand-navy);margin-bottom:3px;}
+  .restrict-item .body .p{font:500 13px/20px 'Montserrat';color:var(--muted);text-wrap:pretty;}
+
+  /* Stack / tech */
+  .tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .tech{
+    background:#fff;border:1px solid var(--border);border-radius:var(--r-md);
+    padding:18px;display:flex;flex-direction:column;gap:6px;
+  }
+  .tech .lbl{font:700 11px/14px 'Montserrat';letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+  .tech .val{font:700 16px/22px 'Montserrat';color:var(--brand-navy);}
+  .tech .sub{font:500 12px/18px 'Montserrat';color:var(--muted);}
+
+  /* Start CTA */
+  .start{
+    padding:72px 80px;text-align:center;background:var(--bg);
+    display:flex;flex-direction:column;align-items:center;gap:20px;
+  }
+  .start h3{font:700 30px/40px 'Montserrat';color:var(--brand-navy);letter-spacing:-0.015em;text-wrap:balance;}
+  .start p{font:500 15px/24px 'Montserrat';color:var(--muted);max-width:640px;}
+  .start-cta{
+    margin-top:12px;
+    padding:18px 34px;background:var(--brand-cyan);color:#fff;
+    border:0;border-radius:var(--r-sm);
+    font:700 16px/22px 'Montserrat';letter-spacing:-0.01em;
+    cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:12px;
+    box-shadow:0 8px 32px rgba(0,136,204,0.28);
+    transition:background .15s ease, box-shadow .15s ease;
+  }
+  .start-cta:hover{background:var(--brand-cyan-hover);box-shadow:0 12px 40px rgba(0,136,204,0.36);}
+
+  /* Footer */
+  .footer{
+    height:96px;padding:24px 40px;background:var(--brand-navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .footer .copy{font:500 13px/20px 'Montserrat';color:rgba(255,255,255,0.7);max-width:560px;}
+  .footer .wordmark-f{font:700 14px/20px 'Montserrat';color:#fff;margin-bottom:2px;}
+  .footer .legal{display:flex;gap:18px;}
+  .footer .legal a{color:rgba(255,255,255,0.7);text-decoration:none;font:500 13px/20px 'Montserrat';}
+  .footer .legal a:hover{color:#fff;}
+  .footer .legal .sep{color:rgba(255,255,255,0.3);}
+  .row{display:flex;align-items:center;}
+</style>
+</head>
+<body>
+<div class="page" data-screen-label="Paraty Explainer">
+
+  <header class="header">
+    <a href="/" class="wordmark">paraty<sup>ai</sup></a>
+    <nav class="nav-right">
+      <a class="nav-link" href="#purpose">Purpose</a>
+      <a class="nav-link" href="#restrictions">Restrictions</a>
+      <a class="nav-link cta" href="/app">
+        Start the demo
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="pulse"></span>Paraty CPO pitch · interactive artefact</div>
+      <h1 class="title">A working prototype of Move 1 — an AI-native direct-booking layer over independent hotels.</h1>
+      <p class="lead">
+        This demo accompanies the 12-month product agenda proposed for Paraty Tech. Four pages —
+        homepage, results, property, checkout — wired to a real language model (Claude Sonnet 4.6)
+        for intent parsing and the AI concierge. The UI is original, the data is mock, and the
+        architectural pattern is what a production AI-agent layer would look like.
+      </p>
+      {% if claude_mode %}
+      <div class="mode-chip"><span class="dot"></span>Live mode · Claude Sonnet 4.6 connected</div>
+      {% else %}
+      <div class="mode-chip mock"><span class="dot"></span>Heuristic mock mode · no ANTHROPIC_API_KEY detected — the flow still works with a regex fallback</div>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- PURPOSE (3 cards) -->
+  <section class="section" id="purpose">
+    <div class="section-head"><span class="num">01</span><h2>Why this exists</h2></div>
+    <div class="col-grid">
+      <div class="col">
+        <div class="caption">Purpose</div>
+        <h3>Move 1 of the product agenda, running — not on slides.</h3>
+        <p>The CPO deck proposes a conversational AI layer over Paraty's direct-booking engine as the first move of the 12-month plan. This demo is that move, end-to-end, so the conversation can happen on an artefact rather than on abstractions.</p>
+      </div>
+      <div class="col">
+        <div class="caption">What it proves</div>
+        <h3>The two-pass LLM pattern is shippable and robust.</h3>
+        <p>Claude parses natural-language travel intent into structured JSON. Python deterministically filters and ranks inventory. Claude re-enters to write hotelier-friendly justifications and run the concierge sidebar. Structured where it matters, language where it matters.</p>
+      </div>
+      <div class="col">
+        <div class="caption">Who it's for</div>
+        <h3>Founders, product, and engineering — same artefact, different lenses.</h3>
+        <p>Founders see direct-booking value and tone. Product sees the conversational surface and upsell hooks. Engineering sees the agent orchestration pattern, cached LLM outputs, and graceful fallback when the model is unavailable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGES (4 cards) -->
+  <section class="section alt">
+    <div class="section-head"><span class="num">02</span><h2>The four pages</h2></div>
+    <div class="pages">
+      <a class="page-card" href="/app">
+        <div class="step">STEP 1</div>
+        <h4>Homepage</h4>
+        <p>Unified search shell — classic fielded search (Where · dates · guests) as the primary surface, AI concierge integrated as a complementary strip below. One module, two modes of entry.</p>
+        <span class="arrow">Open the homepage →</span>
+      </a>
+      <a class="page-card" href="/results">
+        <div class="step">STEP 2</div>
+        <h4>Results</h4>
+        <p>AI concierge sidebar (sticky, full-height, live conversation) + editable search bar + traditional filter chips + hotel cards with LLM-written justifications. Conversational and traditional paradigms coexist.</p>
+        <span class="arrow">See a results page →</span>
+      </a>
+      <a class="page-card" href="/property/kent-malaga">
+        <div class="step">STEP 3</div>
+        <h4>Property</h4>
+        <p>Cinematic hero, sticky reserve bar, gallery with video tile, owner voice, walkable neighbourhood, "people like you chose", AI-recommended add-ons — concierge adapts to ask hotel-specific questions.</p>
+        <span class="arrow">Explore a property →</span>
+      </a>
+      <a class="page-card" href="/checkout/kent-malaga">
+        <div class="step">STEP 4</div>
+        <h4>Checkout</h4>
+        <p>Express checkout, 760px, Apple Pay mock, AI-reasoned add-ons, clear direct-vs-OTA savings at the totals line. Two friction points, no more.</p>
+        <span class="arrow">Preview the checkout →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- RESTRICTIONS -->
+  <section class="section" id="restrictions">
+    <div class="section-head"><span class="num">03</span><h2>What's mock, what isn't</h2></div>
+    <div class="restrict-list">
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">No real Paraty Tech API — 60 hand-curated mock hotels in hotels.json</div>
+          <div class="p">The inventory mirrors Paraty's real geo footprint (Spain, Portugal, Italy, Morocco, Greece, LatAm, Japan). Hotel Kent and The Colony Hotel — real case-study properties from the public Paraty site — are anchors; the remaining 58 are plausible but fictional. In production this layer would hit the Paraty BE API.</div>
+        </div>
+      </div>
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">Booking.com comparison is illustrative, not a live feed</div>
+          <div class="p">Direct prices are stored per hotel. OTA prices use +12–20% deltas per industry benchmarks — realistic but not live. The savings headline is the right order of magnitude; the exact euros are for visual intent.</div>
+        </div>
+      </div>
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">No authentication, no payment, no persistence</div>
+          <div class="p">Checkout renders Apple Pay and guest fields; clicking "Complete reservation" does nothing. Out of scope: login, Stripe integration, session persistence, PMS write-back. All of these are trivial to add against a real backend — they're just not this prototype's point.</div>
+        </div>
+      </div>
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">Claude drives the language, templates drive the rest of the concierge</div>
+          <div class="p">On the Results page, the opening concierge bubble is Claude-generated per query; the upsells and cross-sells are parameterised templates keyed off the parsed intent. On the Property page, Claude generates the owner voice, walkable landmarks, proactive questions, contextual alert, and add-ons in a single call per hotel. If the Anthropic key is absent, every section has a deterministic fallback so the flow never breaks.</div>
+        </div>
+      </div>
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">Out of scope for this prototype</div>
+          <div class="p">Multi-agent handoff with clarifying questions (Move 2), WhatsApp / messaging channels (Move 3), MCP server exposure (so Perplexity or ChatGPT can query Paraty inventory directly), real PMS / CRS integration. These are the next 90–120 days of a 4-engineer + 1 PM squad; they're drawn in the deck, not demonstrated here.</div>
+        </div>
+      </div>
+
+      <div class="restrict-item">
+        <div class="icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
+        </div>
+        <div class="body">
+          <div class="h">Legal / IP</div>
+          <div class="p">No Paraty proprietary information used. Non-compete (HomeToGo 2024–present): this demo does not use any HomeToGo IP or architecture. Non-compete (HBX 2023): more than 16 months elapsed, Paraty Tech is not an HBX-covered entity. If at any point Paraty asks to take this down after the conversation, it comes down same-day.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TECH -->
+  <section class="section alt">
+    <div class="section-head"><span class="num">04</span><h2>Stack</h2></div>
+    <div class="tech-grid">
+      <div class="tech"><div class="lbl">Language model</div><div class="val">Claude Sonnet 4.6</div><div class="sub">Intent parsing · justifications · concierge</div></div>
+      <div class="tech"><div class="lbl">Server</div><div class="val">FastAPI + Jinja2</div><div class="sub">Uvicorn · port 8000</div></div>
+      <div class="tech"><div class="lbl">Inventory</div><div class="val">hotels.json · 60 rows</div><div class="sub">Deterministic filter &amp; rank in Python</div></div>
+      <div class="tech"><div class="lbl">Design medium</div><div class="val">Claude Design → HTML</div><div class="sub">Original, hand-iterated artefact</div></div>
+    </div>
+  </section>
+
+  <!-- START CTA -->
+  <section class="start">
+    <h3>Ready to see it running?</h3>
+    <p>The demo opens on the homepage. Use one of the three example chips, or describe the trip in your own words in the concierge strip — the flow continues all the way to checkout.</p>
+    <a class="start-cta" href="/app">
+      Start the demo
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="row" style="gap:16px;">
+      <div>
+        <div class="wordmark-f">paraty</div>
+        <div class="copy">Prototype built by Unai Aldana · April 2026 · accompanying the Paraty Tech CPO 12-month product agenda</div>
+      </div>
+    </div>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <span class="sep">·</span>
+      <a href="#">Terms</a>
+      <span class="sep">·</span>
+      <a href="mailto:unaialdana@gmail.com">Contact</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
