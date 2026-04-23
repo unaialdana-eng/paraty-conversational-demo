@@ -492,15 +492,14 @@ def build_concierge_conversation(user_query: str, intent: dict, hotels: list) ->
 # ============================================================
 @app.get("/", response_class=HTMLResponse)
 def explainer(request: Request):
-    return templates.TemplateResponse("explainer.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "explainer.html", {
         "claude_mode": _get_client() is not None,
     })
 
 
 @app.get("/app", response_class=HTMLResponse)
 def homepage(request: Request):
-    return templates.TemplateResponse("homepage.html", {"request": request})
+    return templates.TemplateResponse(request, "homepage.html", {})
 
 
 @app.post("/search")
@@ -543,8 +542,7 @@ def results(request: Request, q: str = ""):
             "review_label": _review_label(h.get("avg_rating", 0)),
         })
 
-    return templates.TemplateResponse("results.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "results.html", {
         "q": query,
         "intent": intent,
         "nights": nights,
@@ -564,8 +562,7 @@ def property_page(request: Request, hotel_id: str, q: str = ""):
     savings = compute_savings(hotel, nights)
     content = generate_property_content(query, intent, hotel)
 
-    return templates.TemplateResponse("property.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "property.html", {
         "q": query,
         "hotel": hotel,
         "intent": intent,
@@ -585,8 +582,7 @@ def checkout(request: Request, hotel_id: str, q: str = ""):
     nights = intent.get("nights") or 3
     savings = compute_savings(hotel, nights)
     addons = generate_property_content(query, intent, hotel)["addons"]
-    return templates.TemplateResponse("checkout.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "checkout.html", {
         "q": query,
         "hotel": hotel,
         "intent": intent,
