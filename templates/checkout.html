@@ -104,15 +104,19 @@
     transition:background .15s ease;cursor:pointer;
   }
   .addon:hover{background:var(--bg);}
-  .checkbox{
-    width:22px;height:22px;border-radius:4px;border:2px solid var(--border);
-    flex-shrink:0;position:relative;transition:all .15s ease;
+  .toggle{
+    width:44px;height:26px;border-radius:999px;background:var(--border);
+    flex-shrink:0;position:relative;cursor:pointer;
+    transition:background .18s ease;
   }
-  .checkbox.on{border-color:var(--brand-cyan);background:var(--brand-cyan);}
-  .checkbox.on::after{
-    content:"";position:absolute;top:2px;left:6px;width:6px;height:11px;
-    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg);
+  .toggle::after{
+    content:"";position:absolute;top:3px;left:3px;
+    width:20px;height:20px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    transition:transform .18s ease;
   }
+  .toggle.on{background:var(--brand-cyan);}
+  .toggle.on::after{transform:translateX(18px);}
   .addon-title{font:600 14px/20px 'Montserrat';color:var(--brand-navy);}
   .addon-why{font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;}
   .addon-why::before{content:"AI";font:700 8px/1 'JetBrains Mono';letter-spacing:0.08em;color:var(--brand-cyan);background:#fff;border:1px solid var(--brand-cyan);padding:2px 4px;border-radius:3px;}
@@ -225,8 +229,8 @@
       <div class="sec-label">Suggested for your stay</div>
       <div class="addons">
         {% for a in addons %}
-        <label class="addon" onclick="toggleCheckbox(this)">
-          <div class="checkbox{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
+        <label class="addon" onclick="toggleAddon(this)">
+          <div class="toggle{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
           <div>
             <div class="addon-title">{{ a.title }}</div>
             <div class="addon-why">{{ a.reason }}</div>
@@ -240,9 +244,12 @@
     <!-- TOTAL -->
     <div class="total">
       <div class="total-block">
-        <div class="total-strike">€{{ savings.booking_total|round|int }} on other sites</div>
-        <div class="total-amt">€{{ savings.direct_total|round|int }}</div>
-        <div class="total-save">You save €{{ savings.saving_total|round|int }} direct</div>
+        <div class="total-strike" id="total-strike">€{{ savings.booking_total|round|int }} on other sites</div>
+        <div class="total-amt" id="total-amt">€{{ savings.direct_total|round|int }}</div>
+        <div class="total-save" id="total-save">You save €{{ savings.saving_total|round|int }} direct</div>
+        <div class="total-addons" id="total-addons" style="display:none;font:500 12px/18px 'Montserrat';color:var(--muted);margin-top:4px;">
+          Includes <span id="total-addons-label">€0</span> in extras
+        </div>
       </div>
     </div>
 
@@ -273,10 +280,52 @@
 
 </div>
 <script>
-  function toggleCheckbox(el){
-    const me = el.querySelector('.checkbox');
-    me.classList.toggle('on');
+  const BASE_DIRECT = {{ savings.direct_total|round|int }};
+  const BASE_OTA = {{ savings.booking_total|round|int }};
+  const BASE_SAVE = {{ savings.saving_total|round|int }};
+
+  function parseAddonPrice(text){
+    if (!text) return 0;
+    text = text.trim();
+    if (/free|gratis|included/i.test(text)) return 0;
+    const m = text.match(/€\s*([\d,.]+)/);
+    if (!m) return 0;
+    return parseInt(m[1].replace(/[.,]/g,''), 10) || 0;
   }
+
+  function recalcTotal(){
+    let addonSum = 0;
+    document.querySelectorAll('.addon').forEach(function(el){
+      const toggle = el.querySelector('.toggle');
+      const priceEl = el.querySelector('.addon-price');
+      if (toggle && priceEl && toggle.classList.contains('on')) {
+        addonSum += parseAddonPrice(priceEl.textContent);
+      }
+    });
+    const direct = BASE_DIRECT + addonSum;
+    const ota = BASE_OTA + addonSum;  // Paid extras cost the same through an OTA too
+    const save = BASE_SAVE;            // Savings are on the stay, unchanged by extras
+
+    document.getElementById('total-amt').textContent   = '€' + direct.toLocaleString('en-US');
+    document.getElementById('total-strike').textContent = '€' + ota.toLocaleString('en-US') + ' on other sites';
+    document.getElementById('total-save').textContent   = 'You save €' + save.toLocaleString('en-US') + ' direct';
+    const extras = document.getElementById('total-addons');
+    if (addonSum > 0) {
+      extras.style.display = '';
+      document.getElementById('total-addons-label').textContent = '€' + addonSum.toLocaleString('en-US');
+    } else {
+      extras.style.display = 'none';
+    }
+  }
+
+  function toggleAddon(el){
+    const t = el.querySelector('.toggle');
+    t.classList.toggle('on');
+    recalcTotal();
+  }
+
+  document.addEventListener('DOMContentLoaded', recalcTotal);
+
   function completeBooking(e){
     e.preventDefault();
     alert("This is a prototype — no real booking is made. In production, this is where the Paraty booking API call would fire.");

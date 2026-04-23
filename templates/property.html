@@ -520,8 +520,8 @@
       </div>
       <div class="addons">
         {% for a in content.addons %}
-        <div class="addon">
-          <div class="toggle{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}" onclick="this.classList.toggle('on')"></div>
+        <div class="addon" onclick="toggleAddon(this)">
+          <div class="toggle{% if loop.last and a.price in ['Free','Gratis','Included'] %} on{% endif %}"></div>
           <div>
             <div class="addon-title">{{ a.title }}</div>
             <div class="addon-why">{{ a.reason }}</div>
@@ -536,10 +536,10 @@
   <!-- FINAL CTA — same breakdown pattern as checkout -->
   <section class="final">
     <div class="final-total">
-      <div class="final-strike">€{{ savings.booking_total|round|int }} on other sites</div>
-      <div class="final-amt">€{{ savings.direct_total|round|int }}</div>
-      <div class="final-save">You save €{{ savings.saving_total|round|int }} direct</div>
-      <div class="final-caption">Total · {{ nights }} night{% if nights != 1 %}s{% endif %} · {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} + {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}</div>
+      <div class="final-strike" id="total-strike">€{{ savings.booking_total|round|int }} on other sites</div>
+      <div class="final-amt" id="total-amt">€{{ savings.direct_total|round|int }}</div>
+      <div class="final-save" id="total-save">You save €{{ savings.saving_total|round|int }} direct</div>
+      <div class="final-caption">Total · {{ nights }} night{% if nights != 1 %}s{% endif %} · {{ intent.adults or 2 }} adult{% if (intent.adults or 2) != 1 %}s{% endif %}{% if intent.children and intent.children > 0 %} + {{ intent.children }} child{% if intent.children != 1 %}ren{% endif %}{% endif %}<span id="total-addons-label" style="display:none;"> · includes €0 in extras</span></div>
     </div>
     <a href="/checkout/{{ hotel.id }}?q={{ q|urlencode }}" class="final-cta">
       Complete reservation
@@ -578,6 +578,58 @@
   }
   window.addEventListener('load', () => requestAnimationFrame(scrollConciergeToBottom));
   document.addEventListener('DOMContentLoaded', scrollConciergeToBottom);
+
+  // Live total recalculation as the traveller toggles addons on/off.
+  const BASE_DIRECT = {{ savings.direct_total|round|int }};
+  const BASE_OTA    = {{ savings.booking_total|round|int }};
+  const BASE_SAVE   = {{ savings.saving_total|round|int }};
+
+  function parseAddonPrice(text){
+    if (!text) return 0;
+    text = text.trim();
+    if (/free|gratis|included/i.test(text)) return 0;
+    const m = text.match(/€\s*([\d,.]+)/);
+    if (!m) return 0;
+    return parseInt(m[1].replace(/[.,]/g,''), 10) || 0;
+  }
+
+  function recalcTotal(){
+    let addonSum = 0;
+    document.querySelectorAll('.addon').forEach(function(el){
+      const toggle = el.querySelector('.toggle');
+      const priceEl = el.querySelector('.addon-price');
+      if (toggle && priceEl && toggle.classList.contains('on')) {
+        addonSum += parseAddonPrice(priceEl.textContent);
+      }
+    });
+    const direct = BASE_DIRECT + addonSum;
+    const ota = BASE_OTA + addonSum;   // Paid extras cost the same through an OTA
+    const save = BASE_SAVE;             // Savings on the stay itself are unchanged
+
+    const amtEl    = document.getElementById('total-amt');
+    const strikeEl = document.getElementById('total-strike');
+    const saveEl   = document.getElementById('total-save');
+    const extrasEl = document.getElementById('total-addons-label');
+    if (amtEl)    amtEl.textContent    = '€' + direct.toLocaleString('en-US');
+    if (strikeEl) strikeEl.textContent = '€' + ota.toLocaleString('en-US') + ' on other sites';
+    if (saveEl)   saveEl.textContent   = 'You save €' + save.toLocaleString('en-US') + ' direct';
+    if (extrasEl) {
+      if (addonSum > 0) {
+        extrasEl.style.display = '';
+        extrasEl.textContent = ' · includes €' + addonSum.toLocaleString('en-US') + ' in extras';
+      } else {
+        extrasEl.style.display = 'none';
+      }
+    }
+  }
+
+  function toggleAddon(el){
+    const t = el.querySelector('.toggle');
+    t.classList.toggle('on');
+    recalcTotal();
+  }
+
+  document.addEventListener('DOMContentLoaded', recalcTotal);
 
   // Held-timer — visual only, counts down from 23:00.
   (function(){
